@@ -15,7 +15,6 @@ class Type
             self::PRIORITAIRE,
             self::DANS_L_HEURE,
             self::DANS_LA_JOURNEE,
-            self::DANS_LES_48_HEURES,
         ];
     }
 }

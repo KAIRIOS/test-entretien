@@ -60,7 +60,7 @@ class ReponseManager extends atoum\test
                 $depot = $this->getDepot(),
                 $titre = 'titre',
                 $description = 'description',
-                $type = 5
+                $type = 4
             )
             ->if(
                 $this->reponseValidator->getMockController()->valider = function () {

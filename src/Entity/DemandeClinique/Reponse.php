@@ -43,6 +43,16 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $est_valide;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=RaisonValidation::class, inversedBy="reponses")
+     */
+    private $raison_validation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +114,30 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isEstValide(): ?bool
+    {
+        return $this->est_valide;
+    }
+
+    public function setEstValide(bool $est_valide): self
+    {
+        $this->est_valide = $est_valide;
+
+        return $this;
+    }
+
+    public function getRaisonValidation(): ?RaisonValidation
+    {
+        return $this->raison_validation;
+    }
+
+    public function setRaisonValidation(?RaisonValidation $raison_validation): self
+    {
+        $this->raison_validation = $raison_validation;
 
         return $this;
     }

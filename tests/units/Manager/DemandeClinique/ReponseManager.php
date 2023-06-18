@@ -9,6 +9,11 @@ class ReponseManager extends atoum\test
     private $entityManagerInterface;
     private $reponseFactory;
     private $reponseValidator;
+
+    private $raisonValidationFactory;
+    private $reponseRepository;
+    private $raisonValidationValidator;
+
     public function beforeTestMethod($testMethod)
     {
         $this->entityManagerInterface = new \mock\Doctrine\ORM\EntityManagerInterface();
@@ -18,6 +23,13 @@ class ReponseManager extends atoum\test
 
         $this->reponseValidator = new \mock\App\Validator\DemandeClinique\ReponseValidator();
         $this->reponseValidator->getMockController()->valider = null;
+
+        $this->raisonValidationFactory = new \mock\App\Factory\DemandeClinique\RaisonValidationFactory();
+        $this->raisonValidationFactory->getMockController()->creer = $this->getRaisonValidation();
+
+
+        $this->raisonValidationValidator = new \mock\App\Validator\DemandeClinique\RaisonValidationValidator();
+        $this->raisonValidationValidator->getMockController()->valider = null;
     }
 
     public function testCreerOk()
@@ -53,6 +65,68 @@ class ReponseManager extends atoum\test
         ;
     }
 
+    
+    public function testValiderReponsesOK() {
+        $this
+            ->assert("Test de validation OK")
+            ->given(
+                $reponses = $this->getReponses(),
+                $description = "test"
+            )
+            ->if(
+                $reponseManager = $this->getTestedInstance()
+            )
+            ->then
+                ->object($reponseManager->validerReponses($reponses, $description))
+                    ->isInstanceOf(\App\Entity\DemandeClinique\RaisonValidation::class)
+                ->mock($this->raisonValidationFactory)
+                    ->call('creer')
+                        ->withArguments($reponses, $description)
+                        ->once()
+                ->mock($this->entityManagerInterface)
+                    ->call('persist')
+                        ->withArguments($this->getRaisonValidation())
+                        ->once()
+                    ->call('flush')
+                        ->once()
+        ;
+    }
+
+    public function testValiderReponsesKO() {
+        $this
+            ->assert("Test de validation KO")
+            ->given(
+                $reponses = $this->getReponses(),
+                $description = "test"
+            )
+            ->if(
+                $this->raisonValidationValidator->getMockController()->valider = function () {
+                    throw new \Exception('Erreur');
+                },
+                $reponseManager = $this->getTestedInstance()
+            )
+            ->then
+                ->exception(function () use ($reponseManager, $reponses, $description) {
+                    $reponseManager->validerReponses($reponses, $description);
+                })
+                    ->isInstanceOf(\Exception::class)
+                    ->hasMessage('Erreur')
+                ->mock($this->raisonValidationFactory)
+                    ->call('creer')
+                        ->withArguments($reponses, $description)
+                        ->once()
+                ->mock($this->raisonValidationValidator)
+                    ->call('valider')
+                        ->withArguments($this->getRaisonValidation())
+                        ->once()
+                ->mock($this->entityManagerInterface)
+                    ->call('persist')
+                        ->never()
+                    ->call('flush')
+                        ->never()
+        ;
+    }
+
     public function testCreerKo()
     {
         $this->assert('Test de création KO')
@@ -60,7 +134,7 @@ class ReponseManager extends atoum\test
                 $depot = $this->getDepot(),
                 $titre = 'titre',
                 $description = 'description',
-                $type = 5
+                $type = 3
             )
             ->if(
                 $this->reponseValidator->getMockController()->valider = function () {
@@ -90,9 +164,14 @@ class ReponseManager extends atoum\test
         ;
     }
 
+
     private function getReponse()
     {
         return new \mock\App\Entity\DemandeClinique\Reponse();
+    }
+
+    private function getReponses() {
+        return [new \mock\App\Entity\DemandeClinique\Reponse()];
     }
 
     private function getDepot()
@@ -100,12 +179,19 @@ class ReponseManager extends atoum\test
         return new \mock\App\Entity\DemandeClinique\Depot();
     }
 
+    private function getRaisonValidation() 
+    {
+        return new \mock\App\Entity\DemandeClinique\RaisonValidation();
+    }
+
     private function getTestedInstance()
     {
         return $this->newTestedInstance(
             $this->reponseFactory,
             $this->entityManagerInterface,
-            $this->reponseValidator
+            $this->reponseValidator,
+            $this->raisonValidationFactory,
+            $this->raisonValidationValidator
         );
     }
 }

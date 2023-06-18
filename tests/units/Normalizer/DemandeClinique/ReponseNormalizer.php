@@ -25,6 +25,7 @@ class ReponseNormalizer extends atoum\test
                         'description' => 'description',
                         'type' => 1,
                         'depot' => 1,
+                        'est_valide' => 0
                     ])
         ;
     }
@@ -38,6 +39,7 @@ class ReponseNormalizer extends atoum\test
         $this->calling($reponse)->getDescription = 'description';
         $this->calling($reponse)->getType = 1;
         $this->calling($reponse)->getDepot = $this->getDepot();
+        $this->calling($reponse)->isEstValide = false;
 
         return $reponse;
     }

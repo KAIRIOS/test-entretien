@@ -2,26 +2,26 @@
 
 namespace App\Repository\DemandeClinique;
 
-use App\Entity\DemandeClinique\Reponse;
+use App\Entity\DemandeClinique\RaisonValidation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Reponse>
+ * @extends ServiceEntityRepository<RaisonValidation>
  *
- * @method Reponse|null find($id, $lockMode = null, $lockVersion = null)
- * @method Reponse|null findOneBy(array $criteria, array $orderBy = null)
- * @method Reponse[]    findAll()
- * @method Reponse[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method RaisonValidation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method RaisonValidation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method RaisonValidation[]    findAll()
+ * @method RaisonValidation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ReponseRepository extends ServiceEntityRepository
+class RaisonValidationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Reponse::class);
+        parent::__construct($registry, RaisonValidation::class);
     }
 
-    public function add(Reponse $entity, bool $flush = false): void
+    public function add(RaisonValidation $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class ReponseRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Reponse $entity, bool $flush = false): void
+    public function remove(RaisonValidation $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,18 +39,8 @@ class ReponseRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllInArrayIds(Array $ids): array
-    {
-        return $this->createQueryBuilder('r')
-            ->where('r.id IN (:ids)')
-            ->setParameter('ids', $ids)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
 //    /**
-//     * @return Reponse[] Returns an array of Reponse objects
+//     * @return RaisonValidation[] Returns an array of RaisonValidation objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -64,7 +54,7 @@ class ReponseRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Reponse
+//    public function findOneBySomeField($value): ?RaisonValidation
 //    {
 //        return $this->createQueryBuilder('r')
 //            ->andWhere('r.exampleField = :val')

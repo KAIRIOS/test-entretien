@@ -5,3 +5,22 @@
 body {
     background-color: #f5f5f5;
 }
+
+
+.fade {
+    overflow: hidden;
+    height: 100%;
+    max-height: 999px;
+    transition: all 1s;
+}
+
+.fade-enter, .fade-leave {
+    max-height: 1px !important;
+    opacity: 0 !important;
+}
+
+.fade-enter-active, .fade-leave-active {
+    max-height: 999px;
+    opacity: 1;
+    transition: all 1s;
+}

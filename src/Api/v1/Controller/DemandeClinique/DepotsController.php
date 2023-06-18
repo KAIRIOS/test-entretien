@@ -5,6 +5,7 @@ namespace App\Api\v1\Controller\DemandeClinique;
 use App\Entity\DemandeClinique\Depot;
 use App\Manager\DemandeClinique\ReponseManager;
 use App\Repository\DemandeClinique\DepotRepository;
+use App\Repository\DemandeClinique\ReponseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +23,13 @@ class DepotsController extends AbstractController
     /** @var ReponseManager */
     private $reponseManager;
 
-    public function __construct(DepotRepository $depotRepository, ReponseManager $reponseManager)
+    private $reponseRepository;
+
+    public function __construct(DepotRepository $depotRepository, ReponseManager $reponseManager, ReponseRepository $reponseRepository)
     {
         $this->depotRepository = $depotRepository;
         $this->reponseManager = $reponseManager;
+        $this->reponseRepository = $reponseRepository;
     }
     /**
      * @Route("/depots", name="api_v1_depots_all", methods={"GET"})
@@ -45,5 +49,20 @@ class DepotsController extends AbstractController
         $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int) $data['type']);
 
         return $this->json([], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/depots/reponses/validation", name="api_v1_depots_valider_reponses", methods={"PUT"})
+     */
+    public function validerReponses(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $reponses = $this->reponseRepository->findAllInArrayIds($data['ids']);
+
+
+        $raisonValidation = $this->reponseManager->validerReponses($reponses, $data["description"]);
+
+        return $this->json($raisonValidation, Response::HTTP_CREATED);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Factory\DemandeClinique;
 
 use App\Entity\DemandeClinique\Depot;
+use App\Entity\DemandeClinique\RaisonValidation;
 use App\Entity\DemandeClinique\Reponse;
 
 class ReponseFactory
@@ -15,6 +16,7 @@ class ReponseFactory
             ->setDateCreation(new \DateTime())
             ->setDepot($depot)
             ->setType($type)
+            ->setEstValide(false)
         ;
     }
 }

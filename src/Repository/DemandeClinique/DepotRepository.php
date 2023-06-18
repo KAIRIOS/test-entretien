@@ -24,7 +24,7 @@ class DepotRepository extends ServiceEntityRepository
     public function findAllByReponseLaPlusRecente(): array
     {
         return $this->createQueryBuilder('d')
-            ->leftJoin('d.reponses', 'r')
+            ->leftJoin('d.reponses', 'r', 'WITH', 'r.justificationValidation IS NULL')
             ->addSelect('r')
             ->orderBy('r.dateCreation', 'DESC')
             ->getQuery()

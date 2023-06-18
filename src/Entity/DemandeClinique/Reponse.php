@@ -43,6 +43,11 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $justificationValidation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getJustificationValidation(): ?string
+    {
+        return $this->justificationValidation;
+    }
+
+    public function setJustificationValidation(?string $justificationValidation): self
+    {
+        $this->justificationValidation = $justificationValidation;
 
         return $this;
     }

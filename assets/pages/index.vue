@@ -19,30 +19,49 @@
             <p class="text-base font-semibold">Titre: <span class="text-base text-gray-700 font-light">{{ reponse.titre }}</span></p>
             <p class="text-base font-semibold">Description: <span class="text-base text-gray-700 font-light">{{ reponse.description }}</span></p>
             <p class="text-base font-semibold">Date de création: <span class="text-base text-gray-700 font-light">{{ reponse.date_creation }}</span></p>
+            <input type="checkbox" @change="handleCheckboxChange(reponse)" />
           </div>
         </div>
         <div class="flex items-center justify-center" v-else>
           <p class="text-base font-semibold">Aucune réponse</p>
         </div>
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2" @click="$router.push(`/depots/${depot.id}`)">Répondre à la demande</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 disabled:opacity-50 disabled:cursor-not-allowed" @click="$router.push(`/reponses/valider/${depot.id}`)" v-if="depot.reponses.length" :disabled="isValidButtonDisabled(depot.id)">Valider la sélection</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import { getLabel } from '@/enum/demande_clinique/reponse/type';
 
 export default {
   name: 'Index',
+
+  created() {
+    this.$store.commit('demande_clinique/RESET_SELECTION_REPONSES');
+  },
+
   computed: {
     ...mapGetters({
       depots: 'demande_clinique/depots',
+      reponsesSelectionnees: 'demande_clinique/reponsesSelectionnees'
     }),
   },
   methods: {
     getTypeLabel: getLabel,
+    ...mapMutations({
+      toggleSelection: 'demande_clinique/TOGGLE_REPONSE',
+    }),
+
+    handleCheckboxChange(reponse) {
+      this.toggleSelection(reponse)
+    },
+
+    isValidButtonDisabled(depotId) {
+      return !this.reponsesSelectionnees.filter(reponse => reponse.depot == depotId).length;
+    }
   }
 };
 </script>

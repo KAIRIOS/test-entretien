@@ -46,4 +46,21 @@ class DepotsController extends AbstractController
 
         return $this->json([], Response::HTTP_CREATED);
     }
+
+    /**
+     * @Route("/reponse/valider", name="api_v1_reponses_valider", methods={"POST"})
+     */
+    public function valider(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        // Pour les malins qui veulent enlever le disable du bouton dans l'inspecteur
+        if(empty($data['reponse_ids']))
+            return $this->json('Merci de laisser le DOM tranquille', Response::HTTP_BAD_REQUEST);
+
+        $this->reponseManager->valider($data['reponse_ids'], $data['justification']);
+
+        return $this->json([], Response::HTTP_OK);
+
+    }
 }

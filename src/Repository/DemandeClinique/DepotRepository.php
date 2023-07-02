@@ -26,7 +26,9 @@ class DepotRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->leftJoin('d.reponses', 'r')
             ->addSelect('r')
-            ->orderBy('r.dateCreation', 'DESC')
+            ->orderBy('CASE WHEN r.id IS NULL THEN 1 ELSE 0 END', 'ASC') // Trie les dépôts sans réponse en dernier
+            ->addOrderBy('r.type', 'ASC')
+            ->addOrderBy('r.dateCreation', 'DESC')
             ->getQuery()
             ->getResult()
         ;

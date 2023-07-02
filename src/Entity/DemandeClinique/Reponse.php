@@ -43,6 +43,11 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $motifValidation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getMotifValidation(): ?string
+    {
+        return $this->motifValidation;
+    }
+
+    public function setMotifValidation(?string $motifValidation): self
+    {
+        $this->motifValidation = $motifValidation;
 
         return $this;
     }

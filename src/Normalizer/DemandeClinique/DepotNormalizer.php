@@ -17,7 +17,7 @@ class DepotNormalizer implements NormalizerInterface
         $this->reponseNormalizer = $reponseNormalizer;
     }
 
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, string $format = null, array $context = []): array
     {
         return [
             'id' => $object->getId(),
@@ -30,7 +30,7 @@ class DepotNormalizer implements NormalizerInterface
         ];
     }
 
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $data instanceof Depot;
     }

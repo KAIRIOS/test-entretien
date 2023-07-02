@@ -4,6 +4,7 @@ namespace App\Manager\DemandeClinique;
 
 use App\Entity\DemandeClinique\Depot;
 use App\Entity\DemandeClinique\Reponse;
+use App\Enum\DemandeClinique\Reponse\Type;
 use App\Validator\DemandeClinique\ReponseValidator;
 use App\Factory\DemandeClinique\ReponseFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +20,11 @@ class ReponseManager
     /** @var ReponseValidator $reponseValidator */
     private $reponseValidator;
 
-    public function __construct(ReponseFactory $reponseFactory, EntityManagerInterface $entityManagerInterface, ReponseValidator $reponseValidator)
+
+    public function __construct(
+        ReponseFactory $reponseFactory,
+        EntityManagerInterface $entityManagerInterface,
+        ReponseValidator $reponseValidator)
     {
         $this->reponseFactory = $reponseFactory;
         $this->entityManagerInterface = $entityManagerInterface;
@@ -36,5 +41,18 @@ class ReponseManager
         $this->entityManagerInterface->flush();
 
         return $reponse;
+    }
+
+    public function valider(int $id, string $motif): Reponse
+    {
+        $r = $this->entityManagerInterface->getRepository(Reponse::class)->find($id);
+        $r->setType(Type::VALIDEE);
+        $r->setMotifValidation($motif);
+
+        $this->reponseValidator->valider($r);
+
+        $this->entityManagerInterface->persist($r);
+        $this->entityManagerInterface->flush();
+        return $r;
     }
 }

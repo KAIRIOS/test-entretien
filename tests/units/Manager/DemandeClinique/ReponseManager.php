@@ -9,6 +9,7 @@ class ReponseManager extends atoum\test
     private $entityManagerInterface;
     private $reponseFactory;
     private $reponseValidator;
+
     public function beforeTestMethod($testMethod)
     {
         $this->entityManagerInterface = new \mock\Doctrine\ORM\EntityManagerInterface();

@@ -2,6 +2,7 @@ export const PRIORITAIRE = 1;
 export const DANS_L_HEURE = 2;
 export const DANS_LA_JOURNEE = 3;
 export const DANS_LES_48_HEURES = 4;
+export const VALIDEE = 5;
 
 export const getAll = () => {
     return [PRIORITAIRE, DANS_L_HEURE, DANS_LA_JOURNEE, DANS_LES_48_HEURES];
@@ -17,6 +18,8 @@ export const getLabel = (type) => {
             return 'Dans la journée';
         case DANS_LES_48_HEURES:
             return 'Dans les 48 heures';
+        case VALIDEE:
+            return 'Validée';
         default:
             return 'Aucun type';
     }

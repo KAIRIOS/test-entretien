@@ -46,4 +46,18 @@ class DepotsController extends AbstractController
 
         return $this->json([], Response::HTTP_CREATED);
     }
+
+    /**
+     * @Route("/reponses/valider", name="api_v1_valider_reponses", methods={"POST"})
+     */
+    public function validerReponses(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        foreach ($data['reponses'] as $reponse) {
+            $this->reponseManager->valider($reponse['id'], $data['motif']);
+        }
+
+        return new JsonResponse([], Response::HTTP_OK);
+    }
 }

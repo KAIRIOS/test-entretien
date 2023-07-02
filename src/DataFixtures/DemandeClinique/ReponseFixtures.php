@@ -12,13 +12,14 @@ class ReponseFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        foreach ($this->getDatas() as [$name, $description, $date, $depot, $type]) {
+        foreach ($this->getDatas() as [$name, $description, $date, $depot, $type, $motifValidation]) {
             $reponse = new Reponse();
             $reponse->setTitre($name);
             $reponse->setDescription($description);
             $reponse->setDateCreation($date);
             $reponse->setDepot($this->getReference('depot_'.$depot));
             $reponse->setType($type);
+            $reponse->setMotifValidation($motifValidation);
             $manager->persist($reponse);
         }
 
@@ -27,13 +28,15 @@ class ReponseFixtures extends Fixture implements DependentFixtureInterface
 
     private function getDatas(): iterable
     {
-        yield ['Réponse numéro 1', 'Ceci est la description de la réponse numéro 1', new \DateTime('2023-01-01 00:00:00'), 1, Type::PRIORITAIRE];
-        yield ['Réponse numéro 2', 'Ceci est la description de la réponse numéro 2', new \DateTime('2023-01-01 01:00:00'), 1, Type::PRIORITAIRE];
-        yield ['Réponse numéro 3', 'Ceci est la description de la réponse numéro 3', new \DateTime('2023-01-01 02:00:00'), 1, Type::DANS_L_HEURE];
-        yield ['Réponse numéro 4', 'Ceci est la description de la réponse numéro 4', new \DateTime('2023-01-01 03:00:00'), 1, Type::DANS_L_HEURE];
+        yield ['Réponse numéro 1', 'Ceci est la description de la réponse numéro 1', new \DateTime('2023-01-01 00:00:00'), 1, Type::PRIORITAIRE, null];
+        yield ['Réponse numéro 2', 'Ceci est la description de la réponse numéro 2', new \DateTime('2023-01-01 01:00:00'), 1, Type::PRIORITAIRE, null];
+        yield ['Réponse numéro 3', 'Ceci est la description de la réponse numéro 3', new \DateTime('2023-01-01 02:00:00'), 1, Type::DANS_L_HEURE, null];
+        yield ['Réponse numéro 4', 'Ceci est la description de la réponse numéro 4', new \DateTime('2023-01-01 03:00:00'), 1, Type::DANS_L_HEURE, null];
+        yield ['Réponse numéro 5', 'Ceci est la description de la réponse numéro 5', new \DateTime('2023-01-01 02:00:00'), 1, Type::VALIDEE, 'Raison de la validation'];
+        yield ['Réponse numéro 6', 'Ceci est la description de la réponse numéro 6', new \DateTime('2023-01-01 03:00:00'), 1, Type::VALIDEE, 'Raison de la validation'];
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             DepotFixtures::class,

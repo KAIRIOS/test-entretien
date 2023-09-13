@@ -37,4 +37,13 @@ class ReponseManager
 
         return $reponse;
     }
+
+    public function valider(Reponse $reponse): Reponse
+    {
+        $reponse->setValidated(true);
+        $this->entityManagerInterface->persist($reponse);
+        $this->entityManagerInterface->flush();
+
+        return $reponse;
+    }
 }

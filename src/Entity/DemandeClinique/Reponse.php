@@ -29,6 +29,11 @@ class Reponse
     private $description;
 
     /**
+     * @ORM\Column(type="text", length="255", nullable="true")
+     */
+    private $validationReason;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $dateCreation;
@@ -42,6 +47,11 @@ class Reponse
      * @ORM\Column(type="integer")
      */
     private $type;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validated = false;
 
     public function getId(): ?int
     {
@@ -95,6 +105,40 @@ class Reponse
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function getValidated(): bool
+    {
+        return $this->validated;
+    }
+
+    /**
+     * @param boolean $validated
+     */
+    public function setValidated(?bool $validated): void
+    {
+        $this->validated = $validated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidationReason()
+    {
+        return $this->validationReason;
+    }
+
+    /**
+     * @param mixed $validationReason
+     */
+    public function setValidationReason($validationReason): void
+    {
+        $this->validationReason = $validationReason;
+    }
+
+
 
     public function getType(): ?int
     {

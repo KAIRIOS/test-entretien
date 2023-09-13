@@ -3,6 +3,7 @@
 namespace App\Api\v1\Controller\DemandeClinique;
 
 use App\Entity\DemandeClinique\Depot;
+use App\Entity\DemandeClinique\Reponse;
 use App\Manager\DemandeClinique\ReponseManager;
 use App\Repository\DemandeClinique\DepotRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,5 +46,18 @@ class DepotsController extends AbstractController
         $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int) $data['type']);
 
         return $this->json([], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/reponses/validate/{id}", name="api_v1_depots_valider_reponse", methods={"POST"})
+     */
+    public function validerReponse(Reponse $reponse, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $reponse->setValidationReason($data['validationReason']);
+        $this->reponseManager->valider($reponse);
+
+        return $this->json([], Response::HTTP_OK);
     }
 }

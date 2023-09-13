@@ -55,8 +55,7 @@ class DepotsController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $reponse->setValidationReason($data['validationReason']);
-        $this->reponseManager->valider($reponse);
+        $this->reponseManager->valider($reponse, $data['validationReason']);
 
         return $this->json([], Response::HTTP_OK);
     }

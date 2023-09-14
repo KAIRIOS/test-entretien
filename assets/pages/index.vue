@@ -23,14 +23,14 @@
                 <span v-else class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">En cours de traitement</span>
             </p>
             <p v-if="reponse.validated" class="text-base font-semibold">Commentaire: <span class="text-base text-gray-700 font-light">{{ reponse.validationReason }}</span></p>
-            <input  :id="reponse.id" v-if="!reponse.validated" :value="reponse.id" @click="updateSelectedResponse(reponse.id)"  type="checkbox"  name="list-radio" class="w-4 h-4 text-blue-600 float-right bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <input  :id="reponse.id" v-if="!reponse.validated" :name="'resp_'+reponse.id" :value="reponse.id" @click="updateSelectedResponse(reponse.id)"  type="checkbox"  class="w-4 h-4 text-blue-600 float-right bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
           </div>
         </div>
         <div class="flex items-center justify-center" v-else>
           <p class="text-base font-semibold">Aucune réponse</p>
         </div>
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2" @click="$router.push(`/depots/${depot.id}`)">Répondre à la demande</button>
-        <button v-if="depot.reponses.length > 0" :disabled="checked" @click="showModal()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2">Valider réponse</button>
+        <button v-if="displayValidattionBtn(depot.reponses)" :disabled="!selectedResponses.length > 0" @click="showModal()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2">Valider réponse</button>
       </div>
     </div>
     <Modal
@@ -61,6 +61,9 @@ export default {
       selectedResponses: []
     };
   },
+  mounted() {
+    this.selectedResponses = []
+  },
   methods: {
     getTypeLabel: getLabel,
     showModal() {
@@ -72,6 +75,15 @@ export default {
     updateSelectedResponse(newValue) {
       this.selectedResponses = [].concat(newValue)
       return this.selectedResponses;
+    },
+    displayValidattionBtn(responses) {
+      let notValidatedResponse = [];
+      responses.forEach(function (res) {
+          if (!res.validated) {
+              notValidatedResponse.push(res);
+          }
+      });
+      return !(responses.length === 0 || notValidatedResponse.length === 0);
     }
   }
 };

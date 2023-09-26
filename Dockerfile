@@ -20,8 +20,9 @@ COPY ./docker/apache2/symfony.conf /etc/apache2/sites-available/000-default.conf
 
 RUN chown -R www-data:www-data /var/www \
     && echo "date.timezone = Europe/Paris" >> /usr/local/etc/php/php.ini \
-    && usermod -u 1000 www-data
-    
+    && usermod -u 1000 www-data \
+    && composer install
+
 RUN ["chmod", "+x", "/usr/bin/entrypoint.sh"]
 
 HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:80/ || exit 1

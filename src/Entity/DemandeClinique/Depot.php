@@ -40,6 +40,11 @@ class Depot
      */
     private $reponses;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Validation::class, mappedBy="Depot", cascade={"persist", "remove"})
+     */
+    private $validation;
+
     public function __construct()
     {
         $this->reponses = new ArrayCollection();
@@ -112,6 +117,23 @@ class Depot
                 $reponse->setDepot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getValidation(): ?Validation
+    {
+        return $this->validation;
+    }
+
+    public function setValidation(Validation $validation): self
+    {
+        // set the owning side of the relation if necessary
+        if ($validation->getDepot() !== $this) {
+            $validation->setDepot($this);
+        }
+
+        $this->validation = $validation;
 
         return $this;
     }

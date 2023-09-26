@@ -2,10 +2,11 @@
 
 namespace App\Entity\DemandeClinique;
 
-use App\Repository\DemandeClinique\DepotRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\DemandeClinique\Validation;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\DemandeClinique\DepotRepository;
 
 /**
  * @ORM\Entity(repositoryClass=DepotRepository::class)
@@ -39,6 +40,11 @@ class Depot
      * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="depot")
      */
     private $reponses;
+
+     /**
+     * @ORM\OneToOne(targetEntity=Validation::class, mappedBy="Depot", cascade={"persist", "remove"})
+     */
+    private $validation;
 
     public function __construct()
     {
@@ -112,6 +118,24 @@ class Depot
                 $reponse->setDepot(null);
             }
         }
+
+        return $this;
+    }
+
+
+    public function getValidation(): ?Validation
+    {
+        return $this->validation;
+    }
+
+    public function setValidation(Validation $validation): self
+    {
+        // set the owning side of the relation if necessary
+        if ($validation->getDepot() !== $this) {
+            $validation->setDepot($this);
+        }
+
+        $this->validation = $validation;
 
         return $this;
     }

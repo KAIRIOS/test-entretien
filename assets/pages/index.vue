@@ -13,8 +13,17 @@
         <p class="text-base font-semibold">Titre: <span class="text-base text-gray-700 font-light">{{ depot.titre }}</span></p>
         <p class="text-base font-semibold">Description: <span class="text-base text-gray-700 font-light">{{ depot.description }}</span></p>
         <p class="text-base font-semibold">Date de création: <span class="text-base text-gray-700 font-light">{{ depot.date_creation }}</span></p>
+
+        <div v-if="depot.validation == null && depot.reponses.length">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2" v-bind:class="{ 'disabled-button': isValidationDisabled(depot) }" @click="validerDepot(depot)" :disabled="isValidationDisabled(depot)">Valider</button>
+        </div>
+        <div v-if="depot.validation !== null">
+        <p class="text-base font-semibold"> Raison de la validation: <span class="text-base text-gray-700 font-light">{{ depot.validation.raison }}</span></p>
+        </div>
+
+
         <div class="my-4 p-2 border border-gray rounded-xl bg-gray-100 flex flex-col gap-2" v-if="depot.reponses.length">
-          <div class="border border-dashed border-2 bg-white px-4 py-2" v-for="reponse in depot.reponses" :key="reponse.id">
+          <div class="border border-dashed border-2 bg-white px-4 py-2" v-for="reponse in depot.reponses" :key="reponse.id" @click="isSelectable(depot) ? toggleResponseSelection(depot, reponse) : null" v-bind:class="{ pointer: isSelectable(depot), selected: isSelected( reponse) || isResponseValid(depot, reponse) }">
             <p class="text-base font-semibold text-red-500">Type: <span class="text-base text-gray-700 font-light">{{ getTypeLabel(reponse.type) }}</span></p>
             <p class="text-base font-semibold">Titre: <span class="text-base text-gray-700 font-light">{{ reponse.titre }}</span></p>
             <p class="text-base font-semibold">Description: <span class="text-base text-gray-700 font-light">{{ reponse.description }}</span></p>
@@ -39,10 +48,78 @@ export default {
   computed: {
     ...mapGetters({
       depots: 'demande_clinique/depots',
+      validation: 'demande_clinique/validation',
     }),
+    reponsesValidees : function () {
+      return this.$route.params.reponsesValidees;
+    },
   },
   methods: {
     getTypeLabel: getLabel,
-  }
+    isSelectable(depot) {
+      return depot.validation === null;
+    },
+
+    toggleResponseSelection(depot, response) {
+
+        if (this.currentDepotId !== depot.id) {
+          this.selectedResponses = [];
+          this.currentDepotId = depot.id;
+        }
+
+        const index = this.selectedResponses.indexOf(response.id);
+
+        if (index === -1) {
+          this.selectedResponses.push(response.id);
+        } else {
+          this.selectedResponses.splice(index, 1);
+        }
+    },
+
+    isSelected(response) {
+        return this.selectedResponses.includes(response.id);
+    },
+
+    isValidationDisabled(depot) {
+      return (
+        this.selectedResponses.length === 0 || this.currentDepotId !== depot.id 
+      );
+    },
+
+    validerDepot(depot) {
+      this.$router.push({
+        path: `/validations/${depot.id}`,
+        query: { reponsesValidees: JSON.stringify(this.selectedResponses) }
+      });
+    },
+
+    isResponseValid(depot, reponse) {
+      if (depot.validation && depot.validation.reponses) {
+        return depot.validation.reponses.find(r => r.id === reponse.id) !== undefined;
+      }
+      return false;
+    },
+  },
+  data() {
+  return {
+    selectedResponses: [],
+    currentDepotId: null,
+  };
+  },
 };
 </script>
+
+<style scoped>
+  .pointer{
+    cursor: pointer;
+  }
+
+  .selected{
+    background-color:  #abebc6 ;
+  }
+
+  .disabled-button {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+</style>

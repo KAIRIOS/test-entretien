@@ -41,14 +41,15 @@ class Depot
      */
     private $reponses;
 
-     /**
-     * @ORM\OneToOne(targetEntity=Validation::class, mappedBy="Depot", cascade={"persist", "remove"})
+    /**
+     * @ORM\OneToMany(targetEntity=Validation::class, mappedBy="depot")
      */
-    private $validation;
+    private $validations;
 
     public function __construct()
     {
         $this->reponses = new ArrayCollection();
+        $this->validations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,20 +123,32 @@ class Depot
         return $this;
     }
 
-
-    public function getValidation(): ?Validation
+    /**
+     * @return Collection<int, Validation>
+     */
+    public function getValidations(): Collection
     {
-        return $this->validation;
+        return $this->validations;
     }
 
-    public function setValidation(Validation $validation): self
+    public function addValidation(Validation $validation): self
     {
-        // set the owning side of the relation if necessary
-        if ($validation->getDepot() !== $this) {
+        if (!$this->validations->contains($validation)) {
+            $this->validations[] = $validation;
             $validation->setDepot($this);
         }
 
-        $this->validation = $validation;
+        return $this;
+    }
+
+    public function removeValidation(Validation $validation): self
+    {
+        if ($this->validations->removeElement($validation)) {
+            // set the owning side to null (unless already changed)
+            if ($validation->getDepot() === $this) {
+                $validation->setDepot(null);
+            }
+        }
 
         return $this;
     }

@@ -23,7 +23,7 @@ class DepotsController extends AbstractController
 
     /** @var ReponseManager */
     private $reponseManager;
-    
+
     /** @var ValidationManager */
     private $validationManager;
 
@@ -54,14 +54,16 @@ class DepotsController extends AbstractController
         return $this->json([], Response::HTTP_CREATED);
     }
 
-     /**
+    /**
      * @Route("/depots/{id}/valider", name="api_v1_depots_valider_reponse", methods={"POST"})
      */
     public function validerReponses(Depot $depot, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->validationManager->creer($depot, $data['raison'], $data['reponsesValidees']);
+        foreach (json_decode($data['reponsesValidees']) as $reponseId) {
+            $this->validationManager->creer($depot, $data['raison'], $reponseId);
+        }
 
         return $this->json([], Response::HTTP_CREATED);
     }

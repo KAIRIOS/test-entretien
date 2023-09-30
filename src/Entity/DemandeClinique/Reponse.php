@@ -43,8 +43,8 @@ class Reponse
      */
     private $type;
 
-     /**
-     * @ORM\ManyToOne(targetEntity=Validation::class, inversedBy="Responses")
+    /**
+     * @ORM\OneToOne(targetEntity=Validation::class, mappedBy="reponse", cascade={"persist", "remove"})
      */
     private $validation;
 
@@ -118,8 +118,13 @@ class Reponse
         return $this->validation;
     }
 
-    public function setValidation(?Validation $validation): self
+    public function setValidation(Validation $validation): self
     {
+        // set the owning side of the relation if necessary
+        if ($validation->getReponse() !== $this) {
+            $validation->setReponse($this);
+        }
+
         $this->validation = $validation;
 
         return $this;

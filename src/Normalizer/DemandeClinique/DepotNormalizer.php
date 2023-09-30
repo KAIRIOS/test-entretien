@@ -4,6 +4,7 @@ namespace App\Normalizer\DemandeClinique;
 
 use App\Entity\DemandeClinique\Depot;
 use App\Entity\DemandeClinique\Reponse;
+use App\Entity\DemandeClinique\Validation;
 use App\Normalizer\DemandeClinique\ReponseNormalizer;
 use App\Normalizer\DemandeClinique\ValidationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,7 +25,6 @@ class DepotNormalizer implements NormalizerInterface
 
     public function normalize($object, string $format = null, array $context = [])
     {
-        $validation = $object->getValidation() ? $this->validationNormalizer->normalize($object->getValidation()) : null;
 
         return [
             'id' => $object->getId(),
@@ -34,7 +34,9 @@ class DepotNormalizer implements NormalizerInterface
             'reponses' => array_map(function (Reponse $reponse) {
                 return $this->reponseNormalizer->normalize($reponse);
             }, $object->getReponses()->toArray()),
-            'validation' => $validation,
+            'validation' => array_map(function (Validation $validation) {
+				return $this->validationNormalizer->normalize($validation);
+			}, $object->getValidations()->toArray()),
         ];
     }
 

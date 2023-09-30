@@ -18,34 +18,20 @@ class ValidationFactory
 		$this->entityManagerInterface = $entityManagerInterface;
 	}
 
-	public function creer(Depot $depot, string $raison, array $reponsesId): Validation
+	public function creer(Depot $depot, string $raison, int $reponseId): Validation
 	{
 		$validation = new Validation();
 		$validation->setDateCreation(new \DateTime());
 		$validation->setDepot($depot);
 		$validation->setRaison($raison);
 
-		$reponses = $this->getReponses($reponsesId, $depot);
-		foreach ($reponses as $reponse) {
-			$validation->addResponse($reponse);
-		}
+		$validation->setReponse($this->getReponse($reponseId));
 
 		return $validation;
 	}
 
-	public function getReponses(array $reponsesId, Depot $depot): array
+	public function getReponse(int $reponseId): ?Reponse
 	{
-		$reponses = [];
-		foreach ($reponsesId as $reponseId) {
-			$reponse = $this->entityManagerInterface->getRepository(Reponse::class)->findOneById($reponseId);
-
-			if (!$reponse || $reponse->getDepot() !== $depot) {
-				throw new BadRequestHttpException('La sélection de réponse n’est pas valide');
-			}
-
-			$reponses[] = $reponse;
-		}
-
-		return $reponses;
+			return $this->entityManagerInterface->getRepository(Reponse::class)->findOneById($reponseId);
 	}
 }

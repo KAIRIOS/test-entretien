@@ -5,6 +5,7 @@ namespace App\Manager\DemandeClinique;
 use App\Entity\DemandeClinique\Depot;
 use App\Entity\DemandeClinique\Validation;
 use App\Factory\DemandeClinique\ValidationFactory;
+use App\Validator\DemandeClinique\ValidationValidator;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ValidationManager
@@ -14,16 +15,22 @@ class ValidationManager
 
 	/** @var EntityManagerInterface $entityManagerInterface */
 	private $entityManagerInterface;
+	
+	/** @var ValidationValidator $validationValidator */
+	private $validationValidator;
 
-	public function __construct(ValidationFactory $validationFactory, EntityManagerInterface $entityManagerInterface)
+	public function __construct(ValidationFactory $validationFactory, EntityManagerInterface $entityManagerInterface, ValidationValidator $validationValidator)
 	{
 		$this->entityManagerInterface = $entityManagerInterface;
 		$this->validationFactory = $validationFactory;
+		$this->validationValidator = $validationValidator;
 	}
 
-	public function creer(Depot $depot, string $raison, string $reponses): Validation
+	public function creer(Depot $depot, string $raison, int $reponse): Validation
 	{
-		$validation = $this->validationFactory->creer($depot, $raison, json_decode($reponses));
+		$validation = $this->validationFactory->creer($depot, $raison, $reponse);
+
+		$this->validationValidator->valider($validation);
 
 		$this->entityManagerInterface->persist($validation);
 		$this->entityManagerInterface->flush();

@@ -25,24 +25,26 @@ class Validation
 	private $raison;
 
 	/**
-	 * @ORM\OneToOne(targetEntity=Depot::class, inversedBy="validation", cascade={"persist", "remove"})
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $Depot;
-
-	/**
-	 * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="validation")
-	 */
-	private $responses;
-
-	/**
 	 * @ORM\Column(type="datetime")
 	 */
 	private $dateCreation;
 
+	/**
+	 * @ORM\OneToOne(targetEntity=Reponse::class, inversedBy="validation", cascade={"persist", "remove"})
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $reponse;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity=Depot::class, inversedBy="validations")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $depot;
+
+
+
 	public function __construct()
 	{
-		$this->responses = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -64,42 +66,12 @@ class Validation
 
 	public function getDepot(): ?Depot
 	{
-		return $this->Depot;
+		return $this->depot;
 	}
 
-	public function setDepot(Depot $Depot): self
+	public function setDepot(Depot $depot): self
 	{
-		$this->Depot = $Depot;
-
-		return $this;
-	}
-
-	/**
-	 * @return Collection<int, Reponse>
-	 */
-	public function getResponses(): Collection
-	{
-		return $this->responses;
-	}
-
-	public function addResponse(Reponse $response): self
-	{
-		if (!$this->responses->contains($response)) {
-			$this->responses[] = $response;
-			$response->setValidation($this);
-		}
-
-		return $this;
-	}
-
-	public function removeResponse(Reponse $response): self
-	{
-		if ($this->responses->removeElement($response)) {
-			// set the owning side to null (unless already changed)
-			if ($response->getValidation() === $this) {
-				$response->setValidation(null);
-			}
-		}
+		$this->depot = $depot;
 
 		return $this;
 	}
@@ -112,6 +84,18 @@ class Validation
 	public function setDateCreation(\DateTimeInterface $dateCreation): self
 	{
 		$this->dateCreation = $dateCreation;
+
+		return $this;
+	}
+
+	public function getReponse(): ?Reponse
+	{
+		return $this->reponse;
+	}
+
+	public function setReponse(Reponse $reponse): self
+	{
+		$this->reponse = $reponse;
 
 		return $this;
 	}

@@ -74,7 +74,6 @@ export default {
 				await this.chargerDepots();
 				this.$router.push('/');
 			} catch (e) {
-				console.error(e);
 				window.alert('Une erreur est survenue');
 				this.loading = false;
 			}

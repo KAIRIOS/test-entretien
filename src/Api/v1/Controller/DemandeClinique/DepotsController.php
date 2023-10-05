@@ -5,10 +5,12 @@ namespace App\Api\v1\Controller\DemandeClinique;
 use App\Entity\DemandeClinique\Depot;
 use App\Manager\DemandeClinique\ReponseManager;
 use App\Repository\DemandeClinique\DepotRepository;
+use App\Workflow\Exception\WorkflowTransitionException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -45,5 +47,17 @@ class DepotsController extends AbstractController
         $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int) $data['type']);
 
         return $this->json([], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/reponses/valider", name="api_v1_valider_reponses", methods={"PUT"})
+     */
+    public function validerReponses(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $this->reponseManager->validerPlusieurs($data);
+
+        return $this->json([], Response::HTTP_OK);
     }
 }

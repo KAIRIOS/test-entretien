@@ -9,6 +9,8 @@ class ReponseManager extends atoum\test
     private $entityManagerInterface;
     private $reponseFactory;
     private $reponseValidator;
+    private $reponseWorkflow;
+
     public function beforeTestMethod($testMethod)
     {
         $this->entityManagerInterface = new \mock\Doctrine\ORM\EntityManagerInterface();
@@ -18,6 +20,9 @@ class ReponseManager extends atoum\test
 
         $this->reponseValidator = new \mock\App\Validator\DemandeClinique\ReponseValidator();
         $this->reponseValidator->getMockController()->valider = null;
+
+        $this->reponseWorkflow = new \mock\App\Workflow\DemandeClinique\ReponseWorkflow();
+        $this->reponseWorkflow->getMockController()->validateMany = null;
     }
 
     public function testCreerOk()
@@ -90,6 +95,29 @@ class ReponseManager extends atoum\test
         ;
     }
 
+    /* public function testValiderOk()
+    {
+        $this
+            ->assert('Test de validation OK')
+            ->given(
+                $reponse = $this->getReponse()
+            )
+            ->when
+                ->string($reponse->getStatus())
+            ->then
+                ->contains('waiting')
+            ->given(
+                $reponseManager = $this->getTestedInstance()
+            )
+            ->when(
+                $reponseManager->validerPlusieurs([$reponse])
+            )
+            ->then
+                ->string($reponse->getStatus())
+                    ->contains('validated')
+        ;
+    } */
+
     private function getReponse()
     {
         return new \mock\App\Entity\DemandeClinique\Reponse();
@@ -105,7 +133,8 @@ class ReponseManager extends atoum\test
         return $this->newTestedInstance(
             $this->reponseFactory,
             $this->entityManagerInterface,
-            $this->reponseValidator
+            $this->reponseValidator,
+            $this->reponseWorkflow
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\DataFixtures\DemandeClinique;
 
 use App\Entity\DemandeClinique\Reponse;
+use App\Enum\DemandeClinique\Reponse\Status;
 use App\Enum\DemandeClinique\Reponse\Type;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -19,6 +20,7 @@ class ReponseFixtures extends Fixture implements DependentFixtureInterface
             $reponse->setDateCreation($date);
             $reponse->setDepot($this->getReference('depot_'.$depot));
             $reponse->setType($type);
+            $reponse->setStatus(Status::WAITING);
             $manager->persist($reponse);
         }
 

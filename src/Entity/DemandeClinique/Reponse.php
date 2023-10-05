@@ -43,6 +43,11 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $status;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

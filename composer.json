@@ -40,6 +40,7 @@
         "symfony/validator": "5.4.*",
         "symfony/web-link": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.16",
+        "symfony/workflow": "5.4.*",
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
@@ -82,6 +83,12 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "database:reset": [
+            "php bin/console d:d:d --force --if-exists -vvv",
+            "php bin/console d:d:c -vvv",
+            "php bin/console d:m:m --no-interaction -vvv",
+            "php bin/console d:f:l --no-interaction -vvv"
         ]
     },
     "conflict": {

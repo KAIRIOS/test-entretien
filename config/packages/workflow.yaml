@@ -1,0 +1,17 @@
+framework:
+    workflows:
+        reponses:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\DemandeClinique\Reponse
+            initial_marking: 'waiting'
+            places:
+                - 'waiting'
+                - 'validated'
+            transitions:
+                validate:
+                    from: 'waiting'
+                    to: 'validated'

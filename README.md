@@ -14,6 +14,14 @@ le front de l'application (en mode dev ou prod selon vos besoins).
 
 L'application sera donc accessible à l'adresse suivante : [http://localhost](http://localhost)
 
+## Reset base de données et chargement des données en env dev
+```bash
+php bin/console doctrine:database:drop --force
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate --no-interaction
+php bin/console doctrine:fixtures:load --no-interaction
+```
+
 ## Lancement des tests unitaires
 Pour lancer les tests unitaires, il suffit de lancer la commande suivante :
 ```bash
@@ -50,4 +58,9 @@ Ajout d'une section sur les tests unitaires dans le README
 fix(demande clinique): Correction d'un bug sur la création d'une demande clinique
 
 Un bug était présent sur la création d'une demande clinique. Il concernait la prise en compte du paramètre optionnel comme étant requis.
+```
+
+## Stopper les conteneurs
+```bash
+docker-compose down --remove-orphans
 ```

@@ -27,6 +27,7 @@ class DepotsController extends AbstractController
         $this->depotRepository = $depotRepository;
         $this->reponseManager = $reponseManager;
     }
+    
     /**
      * @Route("/depots", name="api_v1_depots_all", methods={"GET"})
      */

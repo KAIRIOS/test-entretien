@@ -4,37 +4,50 @@ namespace App\Manager\DemandeClinique;
 
 use App\Entity\DemandeClinique\Depot;
 use App\Entity\DemandeClinique\Reponse;
-use App\Validator\DemandeClinique\ReponseValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Factory\DemandeClinique\ReponseFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReponseManager
 {
-    /** @var ReponseFactory $reponseFactory */
-    private $reponseFactory;
+    private ValidatorInterface $validator;
 
-    /** @var EntityManagerInterface $entityManagerInterface */
-    private $entityManagerInterface;
+    protected EntityManagerInterface $entityManager;
 
-    /** @var ReponseValidator $reponseValidator */
-    private $reponseValidator;
+    protected EntityRepository $repository;
 
-    public function __construct(ReponseFactory $reponseFactory, EntityManagerInterface $entityManagerInterface, ReponseValidator $reponseValidator)
+    public function __construct(ReponseFactory $reponseFactory, EntityManagerInterface $entityManager, ValidatorInterface $validator)
     {
+        $this->entityManager = $entityManager;
         $this->reponseFactory = $reponseFactory;
-        $this->entityManagerInterface = $entityManagerInterface;
-        $this->reponseValidator = $reponseValidator;
+        $this->validator = $validator;
+    }
+
+    public function getEntityClass(): string
+    {
+        return Reponse::class;
     }
 
     public function creer(Depot $depot, string $titre, string $description, int $type): Reponse
     {
         $reponse = $this->reponseFactory->creer($depot, $titre, $description, $type);
 
-        $this->reponseValidator->valider($reponse);
+        $errors = $this->validator->validate($reponse);
 
-        $this->entityManagerInterface->persist($reponse);
-        $this->entityManagerInterface->flush();
-
+        if (count($errors) > 0) {
+            throw new UnprocessableEntityHttpException((string) $errors);           
+        }
+        
+        $this->save($reponse);
+        
         return $reponse;
+    }
+
+    public function save(Reponse $reponse): void 
+    {
+        $this->entityManager->persist($reponse);
+        $this->entityManager->flush();
     }
 }

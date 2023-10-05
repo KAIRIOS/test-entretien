@@ -4,6 +4,8 @@ namespace App\Entity\DemandeClinique;
 
 use App\Repository\DemandeClinique\ReponseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @ORM\Entity(repositoryClass=ReponseRepository::class)
@@ -39,9 +41,16 @@ class Reponse
     private $depot;
 
     /**
+     * @Assert\Choice(callback={"App\Enum\DemandeClinique\Reponse\Type", "getAll"}, message="Le type de réponse n'est pas valide")
      * @ORM\Column(type="integer")
      */
     private $type;
+
+    /**  
+     * @Assert\Type(Types::BOOLEAN)
+     * @ORM\Column(type="boolean", options={"default" : 0})
+     */   
+    private bool $validee = false;
 
     public function getId(): ?int
     {
@@ -104,6 +113,18 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isValidee(): bool
+    {
+        return $this->validee;
+    }
+
+    public function setValidee(bool $validee): self
+    {
+        $this->validee = $validee;
 
         return $this;
     }

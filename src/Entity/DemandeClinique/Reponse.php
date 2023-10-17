@@ -43,6 +43,16 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="datetime", name="validated_at", nullable=true)
+     */
+    private ?\DateTime $validatedAt = null;
+
+    /**
+     * @ORM\Column(type="text", name="validation_reason", nullable=true)
+     */
+    private ?string $validationReason = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +114,43 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getValidatedAt(): ?\DateTime
+    {
+        return $this->validatedAt;
+    }
+
+    /**
+     * @param \DateTime $validatedAt
+     * @return $this
+     */
+    public function setValidatedAt(\DateTime $validatedAt): self
+    {
+        $this->validatedAt = $validatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getValidationReason(): ?string
+    {
+        return $this->validationReason;
+    }
+
+    /**
+     * @param null $validationReason
+     */
+    public function setValidationReason($validationReason): self
+    {
+        $this->validationReason = $validationReason;
 
         return $this;
     }

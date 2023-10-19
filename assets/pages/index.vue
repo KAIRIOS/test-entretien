@@ -19,6 +19,10 @@
             <p class="text-base font-semibold">Titre: <span class="text-base text-gray-700 font-light">{{ reponse.titre }}</span></p>
             <p class="text-base font-semibold">Description: <span class="text-base text-gray-700 font-light">{{ reponse.description }}</span></p>
             <p class="text-base font-semibold">Date de création: <span class="text-base text-gray-700 font-light">{{ reponse.date_creation }}</span></p>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2" v-if="reponse.raison_validation === null" @click="validate(reponse.id)">Valider</button>
+            <valider v-if="reponse.raison_validation === null" :reponseId="reponse.id"></valider>
+            <p class="bg-green-500 text-white font-semibold py-2 px-4 rounded mt-2" v-if="reponse.raison_validation">Réponse validée</p>
+            <p v-if="reponse.raison_validation">Raison: {{ reponse.raison_validation }}</p>
           </div>
         </div>
         <div class="flex items-center justify-center" v-else>
@@ -33,9 +37,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import { getLabel } from '@/enum/demande_clinique/reponse/type';
+import valider from './components/reponses/valider.vue';
 
 export default {
   name: 'Index',
+  components: {
+    valider,
+  },
   computed: {
     ...mapGetters({
       depots: 'demande_clinique/depots',

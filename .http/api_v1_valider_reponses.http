@@ -1,0 +1,23 @@
+# curl 'http://localhost/v1/demande-clinique/depots/6/reponses' -X POST -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0' -H 'Accept: application/json, text/plain, */*' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate, br' -H 'Referer: http://localhost/' -H 'Content-Type: application/json' -H 'Origin: http://localhost' -H 'DNT: 1' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Mode: cors' -H 'Sec-Fetch-Site: same-origin' --data-raw '{"titre":"test","description":"test","type":2}'
+PATCH http://localhost/v1/demande-clinique/depots/11/reponses
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: http://localhost/
+Origin: http://localhost
+DNT: 1
+Connection: keep-alive
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+Content-Type: application/json
+
+{"ids": [16,17], "raison": "plop"}
+
+<> 2023-10-19T220611.200.html
+<> 2023-10-19T220555.200.html
+<> 2023-10-19T220537.200.html
+<> 2023-10-19T220510.500.html
+
+###

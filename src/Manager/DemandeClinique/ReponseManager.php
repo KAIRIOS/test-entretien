@@ -37,4 +37,18 @@ class ReponseManager
 
         return $reponse;
     }
+
+    public function validerReponses(Depot $depot, array $ids, string $raison): void
+    {
+        $reponses = $depot->getReponses();
+
+        foreach ($reponses as $reponse) {
+            if (in_array($reponse->getId(), $ids)) {
+                $reponse->setValidation($raison);
+                $this->entityManagerInterface->persist($reponse);
+            }
+        }
+
+        $this->entityManagerInterface->flush();
+    }
 }

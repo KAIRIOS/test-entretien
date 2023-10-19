@@ -40,6 +40,10 @@ class DepotsController extends AbstractController
      */
     public function validerReponses(Depot $depot, Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        $this->reponseManager->validerReponses($depot, $data['ids'], $data['raison']);
+
         return $this->json([], Response::HTTP_NO_CONTENT);
     }
 

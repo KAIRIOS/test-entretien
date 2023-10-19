@@ -36,6 +36,14 @@ class DepotsController extends AbstractController
     }
 
     /**
+     * @Route("/depots/{id}/reponses", name="api_v1_depots_valider_reponses", methods={"PATCH"})
+     */
+    public function validerReponses(Depot $depot, Request $request): JsonResponse
+    {
+        return $this->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * @Route("/depots/{id}/reponses", name="api_v1_depots_creer_reponse", methods={"POST"})
      */
     public function creerReponse(Depot $depot, Request $request): JsonResponse

@@ -5,6 +5,7 @@ namespace App\Repository\DemandeClinique;
 use App\Entity\DemandeClinique\Depot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * @extends ServiceEntityRepository<Depot>
@@ -23,12 +24,13 @@ class DepotRepository extends ServiceEntityRepository
 
     public function findAllByReponseLaPlusRecente(): array
     {
-        return $this->createQueryBuilder('d')
-            ->leftJoin('d.reponses', 'r')
+        $qb = $this->createQueryBuilder("d");
+
+        return $qb
+            ->leftJoin('d.reponses', 'r', Join::WITH, $qb->expr()->isNull('r.validation'))
             ->addSelect('r')
             ->orderBy('r.dateCreation', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

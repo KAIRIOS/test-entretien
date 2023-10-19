@@ -37,4 +37,10 @@ class ReponseManager
 
         return $reponse;
     }
+
+    public function valider(Reponse $reponse, string $raisonValidation): void
+    {
+        $reponse->valider($raisonValidation);
+        $this->entityManagerInterface->flush();
+    }
 }

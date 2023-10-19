@@ -43,6 +43,21 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $raisonValidation = null;
+
+    public function valider(string $raisonValidation): void
+    {
+        $this->raisonValidation = $raisonValidation;
+    }
+
+    public function getRaisonValidation(): ?string
+    {
+        return $this->raisonValidation;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

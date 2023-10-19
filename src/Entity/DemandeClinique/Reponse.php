@@ -43,6 +43,11 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $validation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,5 +111,17 @@ class Reponse
         $this->type = $type;
 
         return $this;
+    }
+
+    public function setValidation(string $raison): self
+    {
+        $this->validation = $raison;
+
+        return $this;
+    }
+
+    public function getValidation(): ?string
+    {
+        return $this->validation;
     }
 }

@@ -25,6 +25,7 @@
           <p class="text-base font-semibold">Aucune réponse</p>
         </div>
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2" @click="$router.push(`/depots/${depot.id}`)">Répondre à la demande</button>
+        <button v-if="depot.reponses.length" disabled class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2">Valider</button>
       </div>
     </div>
   </div>

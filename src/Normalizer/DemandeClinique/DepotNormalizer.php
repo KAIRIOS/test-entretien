@@ -17,6 +17,9 @@ class DepotNormalizer implements NormalizerInterface
         $this->reponseNormalizer = $reponseNormalizer;
     }
 
+    /**
+     * @param Depot $object
+     */
     public function normalize($object, string $format = null, array $context = [])
     {
         return [

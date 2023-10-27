@@ -1,8 +1,11 @@
 import api from '@/api';
 
+
+
 export default {
   namespaced: true,
   state: {
+    /** @var {Depot[]} depots **/
     depots: [],
   },
   mutations: {
@@ -14,8 +17,10 @@ export default {
     async chargerDepots({commit}) {
       commit('SET_DEPOTS', await api.demande_clinique.depots.all());
     },
+
   },
   getters: {
+    /** @return Depot[] **/
     depots: state => state.depots,
   }
 };

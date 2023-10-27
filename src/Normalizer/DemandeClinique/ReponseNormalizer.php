@@ -7,6 +7,19 @@ use App\Entity\DemandeClinique\Reponse;
 
 class ReponseNormalizer implements NormalizerInterface
 {
+    /**
+     * @var ReponseValidationNormalizer
+     */
+    private $reponseValidationNormalizer;
+
+    public function __construct(ReponseValidationNormalizer $reponseValidationNormalizer)
+    {
+        $this->reponseValidationNormalizer = $reponseValidationNormalizer;
+    }
+
+    /**
+     * @param Reponse $object
+     */
     public function normalize($object, string $format = null, array $context = [])
     {
         return [
@@ -16,6 +29,7 @@ class ReponseNormalizer implements NormalizerInterface
             'description' => $object->getDescription(),
             'depot' => $object->getDepot()->getId(),
             'type' => $object->getType(),
+            'reponse_validation' => !$object->getReponseValidation() ? null : $this->reponseValidationNormalizer->normalize($object->getReponseValidation())
         ];
     }
 

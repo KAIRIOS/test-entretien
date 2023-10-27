@@ -43,6 +43,11 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ReponseValidation::class, inversedBy="reponses")
+     */
+    private $reponseValidation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,4 +112,18 @@ class Reponse
 
         return $this;
     }
+
+
+    public function getReponseValidation(): ?ReponseValidation
+    {
+        return $this->reponseValidation;
+    }
+
+    public function setReponseValidation(?ReponseValidation $reponseValidation): self
+    {
+        $this->reponseValidation = $reponseValidation;
+
+        return $this;
+    }
 }
+

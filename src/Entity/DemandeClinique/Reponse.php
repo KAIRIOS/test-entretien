@@ -43,6 +43,13 @@ class Reponse
      */
     private $type;
 
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $isValidated = false;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +111,18 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getIsValidated(): bool
+    {
+        return $this->isValidated;
+    }
+
+    public function setIsValidated(bool $isValidated): self
+    {
+        $this->isValidated = $isValidated;
 
         return $this;
     }

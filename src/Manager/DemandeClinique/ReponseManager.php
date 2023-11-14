@@ -19,6 +19,29 @@ class ReponseManager
     /** @var ReponseValidator $reponseValidator */
     private $reponseValidator;
 
+        /**
+     * Find a response by its ID.
+     *
+     * @param int $id
+     * @return Reponse|null
+     */
+    public function find(int $id): ?Reponse
+    {
+        return $this->entityManagerInterface->getRepository(Reponse::class)->find($id);
+    }
+
+    /**
+     * Save changes to a response, including validation status.
+     *
+     * @param Reponse $reponse
+     * @return void
+     */
+    public function save(Reponse $reponse): void
+    {
+        $this->entityManagerInterface->persist($reponse);
+        $this->entityManagerInterface->flush();
+    }
+
     public function __construct(ReponseFactory $reponseFactory, EntityManagerInterface $entityManagerInterface, ReponseValidator $reponseValidator)
     {
         $this->reponseFactory = $reponseFactory;

@@ -46,4 +46,25 @@ class DepotsController extends AbstractController
 
         return $this->json([], Response::HTTP_CREATED);
     }
+
+
+        /**
+     * @Route("/depots/{id}/validate-responses", name="api_v1_depots_validate_responses", methods={"POST"})
+     */
+    public function validateResponses(Depot $depot, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $responseIds = $data['responseIds'];
+
+        foreach ($responseIds as $responseId) {
+            $reponse = $this->reponseManager->find($responseId);
+            if ($reponse && $reponse->getDepot() === $depot) {
+                $reponse->setIsValidated(true);
+                // If you have a validation comment, set it here
+                $this->reponseManager->save($reponse);
+            }
+        }
+
+        return $this->json(['message' => 'Responses validated successfully']);
+    }
 }

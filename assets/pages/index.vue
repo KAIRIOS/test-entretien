@@ -119,12 +119,19 @@ export default {
   },
   methods: {
     getTypeLabel: getLabel,
-    validateResponses(depotId) {
+    async validateResponses(depotId) {
       const selected = this.selectedResponses[depotId];
       if (selected && selected.length) {
-        // Add validation logic here
-        // Reset the selected responses after validation
-        this.selectedResponses[depotId] = [];
+        const comment = prompt("Enter a validation comment:");
+        if (comment) {
+          // Call the store action to validate the responses
+          await this.$store.dispatch("demande_clinique/validateResponses", {
+            depotId,
+            responseIds: selected,
+            comment,
+          });
+          this.selectedResponses[depotId] = [];
+        }
       } else {
         alert("No responses selected for validation");
       }

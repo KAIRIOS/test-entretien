@@ -16,10 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DepotsController extends AbstractController
 {
-    /** @var DepotRepository */
+    /**
+     * @var DepotRepository
+     */
     private $depotRepository;
 
-    /** @var ReponseManager */
+    /**
+     * @var ReponseManager
+     */
     private $reponseManager;
 
     public function __construct(DepotRepository $depotRepository, ReponseManager $reponseManager)
@@ -27,6 +31,7 @@ class DepotsController extends AbstractController
         $this->depotRepository = $depotRepository;
         $this->reponseManager = $reponseManager;
     }
+
     /**
      * @Route("/depots", name="api_v1_depots_all", methods={"GET"})
      */
@@ -42,7 +47,7 @@ class DepotsController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int) $data['type']);
+        $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int)$data['type']);
 
         return $this->json([], Response::HTTP_CREATED);
     }

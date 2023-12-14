@@ -25,10 +25,8 @@ class DepotRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->leftJoin('d.reponses', 'r')
-            ->addSelect('r')
             ->orderBy('r.dateCreation', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 }

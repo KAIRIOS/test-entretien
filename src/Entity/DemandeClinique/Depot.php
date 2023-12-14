@@ -3,6 +3,7 @@
 namespace App\Entity\DemandeClinique;
 
 use App\Repository\DemandeClinique\DepotRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -74,12 +75,12 @@ class Depot
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): ?DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    public function setDateCreation(DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
 

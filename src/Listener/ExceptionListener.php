@@ -9,7 +9,9 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionListener
 {
-    /** @var ExceptionNormalizer $normalizer */
+    /**
+     * @var ExceptionNormalizer $normalizer
+     */
     private $normalizer;
 
     public function __construct(

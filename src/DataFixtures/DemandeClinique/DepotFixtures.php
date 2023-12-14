@@ -17,7 +17,7 @@ class DepotFixtures extends Fixture
             $depot->setDateCreation($date);
             $manager->persist($depot);
 
-            $this->addReference('depot_'.$id, $depot);
+            $this->addReference('depot_' . $id, $depot);
         }
 
         $manager->flush();

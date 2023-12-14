@@ -39,28 +39,49 @@ class ReponseRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Reponse[] Returns an array of Reponse objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param int[]  $responsesId
+     * @param string $reason
+     */
+    public function validate(array $responsesId, string $reason): void
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->update(Reponse::class, 'r')
+            ->set('r.raisonValidation', ':reason')
+            ->set('r.estValidee', true)
+            ->andWhere('r.id IN (:responses)')
+            ->setParameters(
+                [
+                'responses' => $responsesId,
+                'reason' => $reason,
+                ]
+            )
+            ->getQuery()
+            ->execute();
+    }
 
-//    public function findOneBySomeField($value): ?Reponse
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Reponse[] Returns an array of Reponse objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('r.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Reponse
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

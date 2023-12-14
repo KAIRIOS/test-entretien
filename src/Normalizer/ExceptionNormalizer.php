@@ -12,7 +12,9 @@ class ExceptionNormalizer implements NormalizerInterface
         return $data instanceof \Throwable;
     }
 
-    /** @var HttpException $exception */
+    /**
+     * @var HttpException $exception
+     */
     public function normalize($exception, string $format = null, array $context = []): array
     {
         return $this->getData($exception);
@@ -21,7 +23,7 @@ class ExceptionNormalizer implements NormalizerInterface
     private function getData(\Throwable $exception): array
     {
         return [
-            'message' =>$exception->getMessage(),
+            'message' => $exception->getMessage(),
             'code' => $exception->getCode(),
             'previous' => $exception->getPrevious() ? $this->getData($exception->getPrevious()) : null,
         ];

@@ -10,13 +10,19 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ReponseManager
 {
-    /** @var ReponseFactory $reponseFactory */
+    /**
+     * @var ReponseFactory $reponseFactory
+     */
     private $reponseFactory;
 
-    /** @var EntityManagerInterface $entityManagerInterface */
+    /**
+     * @var EntityManagerInterface $entityManagerInterface
+     */
     private $entityManagerInterface;
 
-    /** @var ReponseValidator $reponseValidator */
+    /**
+     * @var ReponseValidator $reponseValidator
+     */
     private $reponseValidator;
 
     public function __construct(ReponseFactory $reponseFactory, EntityManagerInterface $entityManagerInterface, ReponseValidator $reponseValidator)
@@ -36,5 +42,19 @@ class ReponseManager
         $this->entityManagerInterface->flush();
 
         return $reponse;
+    }
+
+    /**
+     * @param int[] $reponsesId
+     * @param string $raison
+     * @return bool
+     */
+    public function valider(array $reponsesId, string $raison): bool
+    {
+        $repo = $this->entityManagerInterface->getRepository(Reponse::class);
+
+        $repo->validate($reponsesId, $raison);
+
+        return true;
     }
 }

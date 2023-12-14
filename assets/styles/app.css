@@ -5,3 +5,40 @@
 body {
     background-color: #f5f5f5;
 }
+
+.modal-mask {
+    background-color: rgba(0, 0, 0, 0.2);
+    display: table;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    transition: opacity 0.3s ease;
+    width: 100%;
+    z-index: 9999;
+}
+
+.modal-wrapper {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    vertical-align: middle;
+    width: 80%;
+}
+
+.modal-container {
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    margin: 0 auto;
+    padding: 20px 30px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.modal-body > textarea {
+    border: 1px solid black;
+    padding: 10px;
+    width: 100%;
+}

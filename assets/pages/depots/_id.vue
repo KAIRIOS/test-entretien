@@ -13,33 +13,34 @@
           <option selected disabled value="0">Type de réponse</option>
           <option v-for="type in getTypes()" :value="type" :key="type">{{ getTypeLabel(type) }}</option>
         </select>
-        <button 
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          :class="{
+        <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            :class="{
             'cursor-not-allowed': loading,
           }"
-          :disabled="loading"
-        >{{ loading ? 'En cours' : 'Creer' }}</button>
+            :disabled="loading"
+        >{{ loading ? 'En cours' : 'Creer' }}
+        </button>
       </form>
     </div>
   </div>
   <div v-else>
     <p>Le dépot n'existe pas</p>
-  </div> 
+  </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
 import api from '@/api';
 import {getAll, getLabel} from '@/enum/demande_clinique/reponse/type';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   name: 'Depot',
   data: function () {
     return {
-      titre: '',
       description: '',
       loading: false,
+      titre: '',
       type: 0,
     };
   },
@@ -60,9 +61,10 @@ export default {
     }),
     getTypes: getAll,
     getTypeLabel: getLabel,
-    creer: async function() {
+    creer: async function () {
       if (!(this.titre && this.description)) {
         window.alert('Veuillez remplir tous les champs');
+
         return;
       }
 

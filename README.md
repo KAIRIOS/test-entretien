@@ -20,6 +20,24 @@ Pour lancer les tests unitaires, il suffit de lancer la commande suivante :
 docker-compose exec application php vendor/atoum/atoum/bin/atoum -d tests/units
 ```
 
+## Lancement des tests d'intégration
+Le lancement des tests d'intégration nécessite l'environnement de test. Afin de les lancer, 
+vous devez modifier le fichier `docker-compose.yml` comme suit : \
+```yml
+    environment:
+      APP_ENV: test
+```
+
+Rebuildez ensuite le container :
+```bash
+docker-compose up -d --build application
+```
+
+Enfin, pour lancer les tests intégration, il suffit de lancer la commande suivante :
+```bash
+docker-compose exec application php bin/phpunit
+```
+
 ## Se connecter en bash au container
 Pour se connecter en bash au container, il suffit de lancer la commande suivante :
 ```bash

@@ -2,7 +2,9 @@
 
 namespace App\Manager\DemandeClinique\tests\units;
 
+use App\Entity\DemandeClinique\Reponse;
 use atoum\atoum;
+use Exception;
 
 class ReponseManager extends atoum\test
 {
@@ -12,6 +14,7 @@ class ReponseManager extends atoum\test
     public function beforeTestMethod($testMethod)
     {
         $this->entityManagerInterface = new \mock\Doctrine\ORM\EntityManagerInterface();
+        $this->entityManagerInterface->getMockController()->getRepository = new \mock\Repository\DemandeClinique\ReponseRepository();
 
         $this->reponseFactory = new \mock\App\Factory\DemandeClinique\ReponseFactory();
         $this->reponseFactory->getMockController()->creer = $this->getReponse();
@@ -64,7 +67,7 @@ class ReponseManager extends atoum\test
             )
             ->if(
                 $this->reponseValidator->getMockController()->valider = function () {
-                    throw new \Exception('Erreur');
+                    throw new Exception('Erreur');
                 },
                 $reponseManager = $this->getTestedInstance()
             )
@@ -72,7 +75,7 @@ class ReponseManager extends atoum\test
                 ->exception(function () use ($reponseManager, $depot, $titre, $description, $type) {
                     $reponseManager->creer($depot, $titre, $description, $type);
                 })
-                    ->isInstanceOf(\Exception::class)
+                    ->isInstanceOf(Exception::class)
                     ->hasMessage('Erreur')
                 ->mock($this->reponseFactory)
                     ->call('creer')
@@ -87,6 +90,21 @@ class ReponseManager extends atoum\test
                         ->never()
                     ->call('flush')
                         ->never()
+        ;
+    }
+
+    public function testValiderOk()
+    {
+        $this->assert('Test de validation OK')
+                ->if(
+                    $reponseManager = $this->getTestedInstance()
+                )
+                ->then
+                    ->boolean($reponseManager->valider([1], 'raison'))
+                    ->mock($this->entityManagerInterface)
+                        ->call('getRepository')
+                        ->withArguments(Reponse::class)
+                        ->once()
         ;
     }
 

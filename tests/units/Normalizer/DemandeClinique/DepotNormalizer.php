@@ -48,6 +48,18 @@ class DepotNormalizer extends atoum\test
         ;
     }
 
+    public function testSupportsNormalization()
+    {
+        $this->assert('Mauvais objet de normalisation')
+            ->given($objet = $this->getReponse())
+            ->if(
+                $depotNormalizer = $this->getTestedInstance()
+            )
+            ->then
+            ->boolean($depotNormalizer->supportsNormalization($objet))
+            ->isFalse();
+    }
+
     private function getDepot($reponses = [])
     {
         $depot = new \mock\App\Entity\DemandeClinique\Depot();

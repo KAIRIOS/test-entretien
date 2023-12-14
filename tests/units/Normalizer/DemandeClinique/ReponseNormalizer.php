@@ -25,8 +25,22 @@ class ReponseNormalizer extends atoum\test
                         'description' => 'description',
                         'type' => 1,
                         'depot' => 1,
+                        'est_validee' => true,
+                        'validation_raison' => 'raison'
                     ])
         ;
+    }
+
+    public function testSupportsNormalization()
+    {
+        $this->assert('Mauvais objet de normalisation')
+            ->given($objet = $this->getDepot())
+            ->if(
+                $depotNormalizer = $this->getTestedInstance()
+            )
+            ->then
+            ->boolean($depotNormalizer->supportsNormalization($objet))
+            ->isFalse();
     }
 
     private function getReponse()
@@ -38,6 +52,8 @@ class ReponseNormalizer extends atoum\test
         $this->calling($reponse)->getDescription = 'description';
         $this->calling($reponse)->getType = 1;
         $this->calling($reponse)->getDepot = $this->getDepot();
+        $this->calling($reponse)->estValidee = true;
+        $this->calling($reponse)->getRaisonValidation = 'raison';
 
         return $reponse;
     }

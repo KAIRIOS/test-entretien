@@ -47,14 +47,11 @@ class ReponseManager
     /**
      * @param int[] $reponsesId
      * @param string $raison
-     * @return bool
      */
-    public function valider(array $reponsesId, string $raison): bool
+    public function valider(array $reponsesId, string $raison): void
     {
         $repo = $this->entityManagerInterface->getRepository(Reponse::class);
 
         $repo->validate($reponsesId, $raison);
-
-        return true;
     }
 }

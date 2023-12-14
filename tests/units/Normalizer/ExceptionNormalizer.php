@@ -32,6 +32,19 @@ class ExceptionNormalizer extends atoum\test
         ;
     }
 
+    public function testSupportsNormalization()
+    {
+        $this->assert('Mauvais objet de normalisation')
+            ->given($objet = 'object')
+            ->if(
+                $depotNormalizer = $this->getTestedInstance()
+            )
+            ->then
+            ->boolean($depotNormalizer->supportsNormalization($objet))
+            ->isFalse();
+    }
+
+
     private function getException($previous = null)
     {
         return new BadRequestHttpException('message', $previous, 400);

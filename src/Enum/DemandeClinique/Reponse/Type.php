@@ -4,11 +4,14 @@ namespace App\Enum\DemandeClinique\Reponse;
 
 class Type
 {
-    const PRIORITAIRE = 1;
-    const DANS_L_HEURE = 2;
-    const DANS_LA_JOURNEE = 3;
-    const DANS_LES_48_HEURES = 4;
+    public const PRIORITAIRE = 1;
+    public const DANS_L_HEURE = 2;
+    public const DANS_LA_JOURNEE = 3;
+    public const DANS_LES_48_HEURES = 4;
 
+    /**
+     * @return int[]
+     */
     public static function getAll(): array
     {
         return [

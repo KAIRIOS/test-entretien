@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ExceptionNormalizer extends atoum\test
 {
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $this
             ->assert('Test de normalisation OK')
@@ -32,7 +32,20 @@ class ExceptionNormalizer extends atoum\test
         ;
     }
 
-    private function getException($previous = null)
+    public function testSupportsNormalization(): void
+    {
+        $this->assert('Mauvais objet de normalisation')
+            ->given($objet = 'object')
+            ->if(
+                $depotNormalizer = $this->getTestedInstance()
+            )
+            ->then
+            ->boolean($depotNormalizer->supportsNormalization($objet))
+            ->isFalse();
+    }
+
+
+    private function getException($previous = null): BadRequestHttpException
     {
         return new BadRequestHttpException('message', $previous, 400);
     }

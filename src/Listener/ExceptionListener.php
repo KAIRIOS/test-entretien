@@ -9,12 +9,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionListener
 {
-    /** @var ExceptionNormalizer $normalizer */
-    private $normalizer;
+    /**
+     * @var ExceptionNormalizer $normalizer
+     */
+    private ExceptionNormalizer $normalizer;
 
-    public function __construct(
-        ExceptionNormalizer $normalizer
-    ) {
+    public function __construct(ExceptionNormalizer $normalizer)
+    {
         $this->normalizer = $normalizer;
     }
 

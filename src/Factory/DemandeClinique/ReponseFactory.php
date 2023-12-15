@@ -15,6 +15,6 @@ class ReponseFactory
             ->setDateCreation(new \DateTime())
             ->setDepot($depot)
             ->setType($type)
-        ;
+            ->setEstValidee(false);
     }
 }

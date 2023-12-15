@@ -82,6 +82,37 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "reset-db-test": [
+            "php bin/console doctrine:database:drop --force --env=test",
+            "php bin/console doctrine:database:create --env=test",
+            "php bin/console doctrine:migration:migrate --env=test --no-interaction"
+        ],
+        "atoum": [
+            "vendor/atoum/atoum/bin/atoum -d tests/units"
+        ],
+        "phpunit": [
+            "rm -rf var/cache/*",
+            "@reset-db-test",
+            "bin/phpunit"
+        ],
+        "phpcs": [
+            "vendor/bin/phpcbf",
+            "vendor/bin/phpcs --standard=phpcs.xml.dist"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan clear-result-cache",
+            "vendor/bin/phpstan analyse -c phpstan.neon  --memory-limit=1G"
+        ],
+        "test": [
+            "@atoum",
+            "@phpunit"
+        ],
+        "test-and-verif": [
+            "@phpcs",
+            "@phpstan",
+            "@atoum",
+            "@phpunit"
         ]
     },
     "conflict": {
@@ -96,7 +127,9 @@
     "require-dev": {
         "atoum/atoum": "^4.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "*",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
         "symfony/debug-bundle": "5.4.*",

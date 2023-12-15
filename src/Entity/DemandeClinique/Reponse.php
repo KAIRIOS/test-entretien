@@ -3,6 +3,7 @@
 namespace App\Entity\DemandeClinique;
 
 use App\Repository\DemandeClinique\ReponseRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,32 +17,42 @@ class Reponse
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id; /**  @phpstan-ignore-line */
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titre;
+    private ?string $titre;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateCreation;
+    private ?DateTimeInterface $dateCreation;
 
     /**
      * @ORM\ManyToOne(targetEntity=Depot::class, inversedBy="reponses")
      */
-    private $depot;
+    private ?Depot $depot;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $type;
+    private ?int $type;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $estValidee;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $raisonValidation;
 
     public function getId(): ?int
     {
@@ -72,12 +83,12 @@ class Reponse
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
+    public function getDateCreation(): ?DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    public function setDateCreation(DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
 
@@ -104,6 +115,30 @@ class Reponse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function estValidee(): ?bool
+    {
+        return $this->estValidee;
+    }
+
+    public function setEstValidee(bool $estValidee): self
+    {
+        $this->estValidee = $estValidee;
+
+        return $this;
+    }
+
+    public function getRaisonValidation(): ?string
+    {
+        return $this->raisonValidation;
+    }
+
+    public function setRaisonValidation(?string $raisonValidation): self
+    {
+        $this->raisonValidation = $raisonValidation;
 
         return $this;
     }

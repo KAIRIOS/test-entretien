@@ -2,25 +2,34 @@
 
 namespace App\Manager\DemandeClinique\tests\units;
 
+use App\Entity\DemandeClinique\Reponse;
 use atoum\atoum;
+use Exception;
+use mock\Doctrine\ORM\EntityManagerInterface;
+use mock\App\Entity\DemandeClinique\Reponse as MockResponse;
+use mock\App\Entity\DemandeClinique\Depot;
+use mock\App\Factory\DemandeClinique\ReponseFactory;
+use mock\App\Validator\DemandeClinique\ReponseValidator;
+use mock\Repository\DemandeClinique\ReponseRepository;
 
 class ReponseManager extends atoum\test
 {
-    private $entityManagerInterface;
-    private $reponseFactory;
-    private $reponseValidator;
-    public function beforeTestMethod($testMethod)
+    private EntityManagerInterface $entityManagerInterface;
+    private ReponseFactory $reponseFactory;
+    private ReponseValidator $reponseValidator;
+    public function beforeTestMethod($testMethod): void
     {
-        $this->entityManagerInterface = new \mock\Doctrine\ORM\EntityManagerInterface();
+        $this->entityManagerInterface = new EntityManagerInterface();
+        $this->entityManagerInterface->getMockController()->getRepository = new ReponseRepository();
 
-        $this->reponseFactory = new \mock\App\Factory\DemandeClinique\ReponseFactory();
+        $this->reponseFactory = new ReponseFactory();
         $this->reponseFactory->getMockController()->creer = $this->getReponse();
 
-        $this->reponseValidator = new \mock\App\Validator\DemandeClinique\ReponseValidator();
+        $this->reponseValidator = new ReponseValidator();
         $this->reponseValidator->getMockController()->valider = null;
     }
 
-    public function testCreerOk()
+    public function testCreerOk(): void
     {
         $this
             ->assert('Test de création OK')
@@ -35,7 +44,7 @@ class ReponseManager extends atoum\test
             )
             ->then
                 ->object($reponseManager->creer($depot, $titre, $description, $type))
-                    ->isInstanceOf(\App\Entity\DemandeClinique\Reponse::class)
+                    ->isInstanceOf(Reponse::class)
                 ->mock($this->reponseFactory)
                     ->call('creer')
                         ->withArguments($depot, $titre, $description, $type)
@@ -53,7 +62,7 @@ class ReponseManager extends atoum\test
         ;
     }
 
-    public function testCreerKo()
+    public function testCreerKo(): void
     {
         $this->assert('Test de création KO')
             ->given(
@@ -63,8 +72,8 @@ class ReponseManager extends atoum\test
                 $type = 5
             )
             ->if(
-                $this->reponseValidator->getMockController()->valider = function () {
-                    throw new \Exception('Erreur');
+                $this->reponseValidator->getMockController()->valider = static function () {
+                    throw new Exception('Erreur');
                 },
                 $reponseManager = $this->getTestedInstance()
             )
@@ -72,7 +81,7 @@ class ReponseManager extends atoum\test
                 ->exception(function () use ($reponseManager, $depot, $titre, $description, $type) {
                     $reponseManager->creer($depot, $titre, $description, $type);
                 })
-                    ->isInstanceOf(\Exception::class)
+                    ->isInstanceOf(Exception::class)
                     ->hasMessage('Erreur')
                 ->mock($this->reponseFactory)
                     ->call('creer')
@@ -90,14 +99,29 @@ class ReponseManager extends atoum\test
         ;
     }
 
-    private function getReponse()
+    public function testValiderOk(): void
     {
-        return new \mock\App\Entity\DemandeClinique\Reponse();
+        $this->assert('Test de validation OK')
+                ->if(
+                    $reponseManager = $this->getTestedInstance()
+                )
+                ->then
+                    ->variable($reponseManager->valider([1], 'raison'))
+                    ->mock($this->entityManagerInterface)
+                        ->call('getRepository')
+                        ->withArguments(Reponse::class)
+                        ->once()
+        ;
     }
 
-    private function getDepot()
+    private function getReponse(): MockResponse
     {
-        return new \mock\App\Entity\DemandeClinique\Depot();
+        return new MockResponse();
+    }
+
+    private function getDepot(): Depot
+    {
+        return new Depot();
     }
 
     private function getTestedInstance()

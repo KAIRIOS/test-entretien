@@ -3,11 +3,12 @@
 namespace App\Validator\DemandeClinique\tests\units;
 
 use atoum\atoum;
+use mock\App\Entity\DemandeClinique\Reponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ReponseValidator extends atoum\test
 {
-    public function testValiderOk()
+    public function testValiderOk(): void
     {
         $this
             ->assert('Test de validation OK')
@@ -23,7 +24,7 @@ class ReponseValidator extends atoum\test
         ;
     }
 
-    public function testValiderKo()
+    public function testValiderKo(): void
     {
         $this
             ->assert('Test de validation KO')
@@ -41,9 +42,9 @@ class ReponseValidator extends atoum\test
         ;
     }
 
-    private function getReponse($type = 1)
+    private function getReponse($type = 1): Reponse
     {
-        $reponse = new \mock\App\Entity\DemandeClinique\Reponse();
+        $reponse = new Reponse();
         $reponse->getMockController()->getType = $type;
 
         return $reponse;

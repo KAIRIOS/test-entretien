@@ -19,27 +19,28 @@ class Depot
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id; /**  @phpstan-ignore-line */
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titre;
+    private ?string $titre;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateCreation;
+    private ?DateTimeInterface $dateCreation;
 
     /**
      * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="depot")
+     * @var Collection<Reponse> $reponses
      */
-    private $reponses;
+    private Collection $reponses;
 
     public function __construct()
     {

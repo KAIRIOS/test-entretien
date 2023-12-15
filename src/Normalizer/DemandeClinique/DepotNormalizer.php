@@ -21,18 +21,36 @@ class DepotNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param $object
+     * @param Depot $object
      * @param string|null $format
-     * @param array       $context
+     * @param array<mixed>       $context
      *
-     * @return array{id: int, date_creation: DateTimeInterface, titre: string, description: string, reponse: Reponse[]}
-     * @throws ExceptionInterface
+     * @return array{
+     *    id: int|null,
+     *    date_creation: string,
+     *    titre: string|null,
+     *    description: string|null,
+     *    reponses: array<
+     *        int,
+     *        array{
+     *            id: int,
+     *            date_creation: DateTimeInterface,
+     *            titre: string,
+     *            description: string,
+     *            depot: Depot,
+     *            type: int,
+     *            validation_raison: string
+     *        }
+     *    >
+     * }
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
+        /** @var DateTimeInterface $objectDateCreation */
+        $objectDateCreation = $object->getDateCreation();
         return [
             'id' => $object->getId(),
-            'date_creation' => $object->getDateCreation()->format('Y-m-d H:i:s'),
+            'date_creation' => $objectDateCreation->format('Y-m-d H:i:s'),
             'titre' => $object->getTitre(),
             'description' => $object->getDescription(),
             'reponses' => array_map(

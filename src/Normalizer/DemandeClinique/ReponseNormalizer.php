@@ -12,7 +12,7 @@ class ReponseNormalizer implements NormalizerInterface
     /**
      * @param $object
      * @param string|null $format
-     * @param array       $context
+     * @param array<mixed>       $context
      *
      * @return array{id: int, date_creation: DateTimeInterface, titre: string, description: string, depot: Depot, type: int, validation_raison: string}
      * */

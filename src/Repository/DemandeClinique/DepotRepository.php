@@ -21,6 +21,9 @@ class DepotRepository extends ServiceEntityRepository
         parent::__construct($registry, Depot::class);
     }
 
+    /**
+     * @return Depot[]
+     */
     public function findAllByReponseLaPlusRecente(): array
     {
         return $this->createQueryBuilder('d')

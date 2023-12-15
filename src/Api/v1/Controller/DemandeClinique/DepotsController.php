@@ -45,7 +45,10 @@ class DepotsController extends AbstractController
      */
     public function creerReponse(Depot $depot, Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        /** @var string $content */
+        $content = $request->getContent();
+
+        $data = json_decode($content, true);
 
         $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int)$data['type']);
 

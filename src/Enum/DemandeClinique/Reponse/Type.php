@@ -9,6 +9,9 @@ class Type
     public const DANS_LA_JOURNEE = 3;
     public const DANS_LES_48_HEURES = 4;
 
+    /**
+     * @return int[]
+     */
     public static function getAll(): array
     {
         return [

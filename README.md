@@ -39,11 +39,16 @@ docker-compose exec application composer phpunit
 ```
 
 ## Lancement de la suite de tests intégrale
-La suite de test intégrale lance `phpCbf` et `phpCs` afin de valider le code style, puis les tests unitaire et d'intégration.
+La suite de test intégrale lance `phpCbf`, `phpCs` et `PhpStan` afin de valider le code style, puis les tests unitaire et d'intégration.
 > /!\ La suite de tests Unitaire **vide la base de donnée de test et le cache**. /!\
 > Le lancement de la suite de test nécessite l'environnement de test (CF **lancement des tests d'intégration**)
 ```bash
 docker-compose exec application composer test-and-verif
+```
+
+lancement de la suite sans `phpcbf` et `phpcs` :
+```bash
+docker-compose exec application composer test
 ```
 
 ## Se connecter en bash au container

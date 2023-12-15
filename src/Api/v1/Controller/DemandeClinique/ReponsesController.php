@@ -28,7 +28,10 @@ class ReponsesController extends AbstractController
      */
     public function validerReponses(Request $request): JsonResponse
     {
-        [$responses, $reason] = array_values(json_decode($request->getContent(), true));
+        /** @var string $content */
+        $content = $request->getContent();
+
+        [$responses, $reason] = array_values(json_decode($content, true));
 
         $this->reponseManager->valider($responses, $reason);
 

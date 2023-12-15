@@ -24,6 +24,7 @@ class ReponsesControllerTest extends WebFunctionalTestCase
     public function testValiderReponses(): void
     {
         [$reponseA, $reponseB] = $this->getContext();
+
         $this->client->jsonRequest(
             Request::METHOD_POST,
             $this->urlGenerator->generate(
@@ -61,7 +62,6 @@ class ReponsesControllerTest extends WebFunctionalTestCase
             ->setDateCreation(new DateTime());
 
         $this->entityManager->persist($depot);
-
         $reponseA = $this->reponseManager->creer($depot, 'titre reponse A', 'description réponse A', 1);
         $reponseB = $this->reponseManager->creer($depot, 'titre reponse B', 'description réponse B', 2);
 

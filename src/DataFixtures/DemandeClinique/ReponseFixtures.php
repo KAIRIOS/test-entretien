@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\DemandeClinique;
 
+use App\Entity\DemandeClinique\Depot;
 use App\Entity\DemandeClinique\Reponse;
 use App\Enum\DemandeClinique\Reponse\Type;
 use DateTime;
@@ -14,11 +15,14 @@ class ReponseFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         foreach ($this->getDatas() as [$name, $description, $date, $depot, $type]) {
+            /** @var Depot|null $depotReference */
+            $depotReference = $this->getReference('depot_' . $depot);
+
             $reponse = new Reponse();
             $reponse->setTitre($name);
             $reponse->setDescription($description);
             $reponse->setDateCreation($date);
-            $reponse->setDepot($this->getReference('depot_' . $depot));
+            $reponse->setDepot($depotReference);
             $reponse->setType($type);
             $manager->persist($reponse);
         }
@@ -27,7 +31,7 @@ class ReponseFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
-     * @return iterable{string, string, DateTime,int}
+     * @return iterable<mixed>
      */
     private function getDatas(): iterable
     {

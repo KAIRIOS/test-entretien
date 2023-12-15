@@ -13,7 +13,7 @@ class DepotNormalizer implements NormalizerInterface
     /**
      * @var ReponseNormalizer $reponseNormalizer
      */
-    private $reponseNormalizer;
+    private ReponseNormalizer $reponseNormalizer;
 
     public function __construct(ReponseNormalizer $reponseNormalizer)
     {

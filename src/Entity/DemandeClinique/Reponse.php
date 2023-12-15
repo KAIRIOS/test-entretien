@@ -17,42 +17,42 @@ class Reponse
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $titre;
+    private ?string $titre;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateCreation;
+    private ?DateTimeInterface $dateCreation;
 
     /**
      * @ORM\ManyToOne(targetEntity=Depot::class, inversedBy="reponses")
      */
-    private $depot;
+    private ?Depot $depot;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $type;
+    private ?int $type;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $estValidee;
+    private bool $estValidee;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $raisonValidation;
+    private ?string $raisonValidation;
 
     public function getId(): ?int
     {

@@ -17,7 +17,7 @@ L'application sera donc accessible à l'adresse suivante : [http://localhost](ht
 ## Lancement des tests unitaires
 Pour lancer les tests unitaires, il suffit de lancer la commande suivante :
 ```bash
-docker-compose exec application php vendor/atoum/atoum/bin/atoum -d tests/units
+docker-compose exec application composer atoum
 ```
 
 ## Lancement des tests d'intégration
@@ -35,7 +35,15 @@ docker-compose up -d --build application
 
 Enfin, pour lancer les tests intégration, il suffit de lancer la commande suivante :
 ```bash
-docker-compose exec application php bin/phpunit
+docker-compose exec application composer phpunit
+```
+
+## Lancement de la suite de tests intégrale
+La suite de test intégrale lance `phpCbf` et `phpCs` afin de valider le code style, puis les tests unitaire et d'intégration.
+> /!\ La suite de tests Unitaire **vide la base de donnée de test et le cache**. /!\
+> Le lancement de la suite de test nécessite l'environnement de test (CF **lancement des tests d'intégration**)
+```bash
+docker-compose exec application composer test-and-verif
 ```
 
 ## Se connecter en bash au container

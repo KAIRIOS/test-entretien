@@ -82,6 +82,28 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "reset-db-test": [
+            "php bin/console doctrine:database:drop --force --env=test",
+            "php bin/console doctrine:database:create --env=test",
+            "php bin/console doctrine:migration:migrate --env=test --no-interaction"
+        ],
+        "atoum": [
+            "vendor/atoum/atoum/bin/atoum -d tests/units"
+        ],
+        "phpunit": [
+            "rm -rf var/cache/*",
+            "@reset-db-test",
+            "bin/phpunit"
+        ],
+        "phpcs": [
+            "vendor/bin/phpcbf",
+            "vendor/bin/phpcs --standard=phpcs.xml.dist"
+        ],
+        "test-and-verif": [
+            "@phpcs",
+            "@atoum",
+            "@phpunit"
         ]
     },
     "conflict": {

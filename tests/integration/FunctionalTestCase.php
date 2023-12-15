@@ -34,7 +34,6 @@ abstract class FunctionalTestCase extends KernelTestCase
         $reponseManager = $container->get(ReponseManager::class);
 
         $this->reponseManager = $reponseManager;
-
     }
 
     /**

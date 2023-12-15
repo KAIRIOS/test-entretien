@@ -13,17 +13,17 @@ class ReponseManager
     /**
      * @var ReponseFactory $reponseFactory
      */
-    private $reponseFactory;
+    private ReponseFactory $reponseFactory;
 
     /**
      * @var EntityManagerInterface $entityManagerInterface
      */
-    private $entityManagerInterface;
+    private EntityManagerInterface $entityManagerInterface;
 
     /**
      * @var ReponseValidator $reponseValidator
      */
-    private $reponseValidator;
+    private ReponseValidator $reponseValidator;
 
     public function __construct(ReponseFactory $reponseFactory, EntityManagerInterface $entityManagerInterface, ReponseValidator $reponseValidator)
     {

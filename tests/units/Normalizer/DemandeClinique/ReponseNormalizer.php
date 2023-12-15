@@ -3,10 +3,12 @@
 namespace App\Normalizer\DemandeClinique\tests\units;
 
 use atoum\atoum;
+use mock\App\Entity\DemandeClinique\Reponse;
+use mock\App\Entity\DemandeClinique\Depot;
 
 class ReponseNormalizer extends atoum\test
 {
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $this
             ->assert('Test de normalisation OK')
@@ -31,7 +33,7 @@ class ReponseNormalizer extends atoum\test
         ;
     }
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $this->assert('Mauvais objet de normalisation')
             ->given($objet = $this->getDepot())
@@ -43,9 +45,9 @@ class ReponseNormalizer extends atoum\test
             ->isFalse();
     }
 
-    private function getReponse()
+    private function getReponse(): Reponse
     {
-        $reponse = new \mock\App\Entity\DemandeClinique\Reponse();
+        $reponse = new Reponse();
         $this->calling($reponse)->getId = 1;
         $this->calling($reponse)->getDateCreation = new \DateTime('2019-01-01 00:00:00');
         $this->calling($reponse)->getTitre = 'titre';
@@ -58,9 +60,9 @@ class ReponseNormalizer extends atoum\test
         return $reponse;
     }
 
-    private function getDepot()
+    private function getDepot(): Depot
     {
-        $depot = new \mock\App\Entity\DemandeClinique\Depot();
+        $depot = new Depot();
         $this->calling($depot)->getId = 1;
 
         return $depot;

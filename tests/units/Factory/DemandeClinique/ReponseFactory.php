@@ -2,11 +2,13 @@
 
 namespace App\Factory\DemandeClinique\tests\units;
 
+use App\Entity\DemandeClinique\Reponse;
 use atoum\atoum;
+use mock\App\Entity\DemandeClinique\Depot;
 
 class ReponseFactory extends atoum\test
 {
-    public function testCreer()
+    public function testCreer(): void
     {
         $this
             ->assert('Test de création OK')
@@ -21,13 +23,13 @@ class ReponseFactory extends atoum\test
             )
             ->then
                 ->object($reponseFactory->creer($depot, $titre, $description, $type))
-                    ->isInstanceOf(\App\Entity\DemandeClinique\Reponse::class)
+                    ->isInstanceOf(Reponse::class)
         ;
     }
 
-    private function getDepot()
+    private function getDepot(): Depot
     {
-        return new \mock\App\Entity\DemandeClinique\Depot();
+        return new Depot();
     }
 
     private function getTestedInstance()

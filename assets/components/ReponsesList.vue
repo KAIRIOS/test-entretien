@@ -70,10 +70,6 @@ export default {
         <p class="text-base font-semibold">Date de création:
           <span class="text-base text-gray-700 font-light">{{ reponse.date_creation }}</span>
         </p>
-        <p class="text-base font-semibold">Validation:
-          <span class="text-base text-gray-700 font-light">{{ reponse.date_creation }}</span>
-        </p>
-
 
         <p>
           Opérations:

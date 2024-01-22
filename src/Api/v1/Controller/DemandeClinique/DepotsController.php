@@ -27,6 +27,7 @@ class DepotsController extends AbstractController
         $this->depotRepository = $depotRepository;
         $this->reponseManager = $reponseManager;
     }
+
     /**
      * @Route("/depots", name="api_v1_depots_all", methods={"GET"})
      */
@@ -36,13 +37,21 @@ class DepotsController extends AbstractController
     }
 
     /**
+     * @Route("/depots/unmoderated", name="api_v1_depots_unmoderated", methods={"GET"})
+     */
+    public function nonvalidees(): JsonResponse
+    {
+        return $this->json($this->depotRepository->findNonValideesByReponseLaPlusRecente());
+    }
+
+    /**
      * @Route("/depots/{id}/reponses", name="api_v1_depots_creer_reponse", methods={"POST"})
      */
     public function creerReponse(Depot $depot, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int) $data['type']);
+        $this->reponseManager->creer($depot, $data['titre'], $data['description'], (int)$data['type']);
 
         return $this->json([], Response::HTTP_CREATED);
     }

@@ -43,6 +43,16 @@ class Reponse
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateValidated;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $validationComment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +115,42 @@ class Reponse
     {
         $this->type = $type;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateValidated()
+    {
+        return $this->dateValidated;
+    }
+
+    /**
+     * @param mixed $dateValidated
+     * @return Reponse
+     */
+    public function setDateValidated($dateValidated)
+    {
+        $this->dateValidated = $dateValidated;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidationComment()
+    {
+        return $this->validationComment;
+    }
+
+    /**
+     * @param mixed $validationComment
+     * @return Reponse
+     */
+    public function setValidationComment($validationComment)
+    {
+        $this->validationComment = $validationComment;
         return $this;
     }
 }

@@ -14,12 +14,9 @@
         <p class="text-base font-semibold">Description: <span class="text-base text-gray-700 font-light">{{ depot.description }}</span></p>
         <p class="text-base font-semibold">Date de création: <span class="text-base text-gray-700 font-light">{{ depot.date_creation }}</span></p>
         <div class="my-4 p-2 border border-gray rounded-xl bg-gray-100 flex flex-col gap-2" v-if="depot.reponses.length">
-          <div class="border border-dashed border-2 bg-white px-4 py-2" v-for="reponse in depot.reponses" :key="reponse.id">
-            <p class="text-base font-semibold text-red-500">Type: <span class="text-base text-gray-700 font-light">{{ getTypeLabel(reponse.type) }}</span></p>
-            <p class="text-base font-semibold">Titre: <span class="text-base text-gray-700 font-light">{{ reponse.titre }}</span></p>
-            <p class="text-base font-semibold">Description: <span class="text-base text-gray-700 font-light">{{ reponse.description }}</span></p>
-            <p class="text-base font-semibold">Date de création: <span class="text-base text-gray-700 font-light">{{ reponse.date_creation }}</span></p>
-          </div>
+
+          <ReponsesList :reponses="depot.reponses" @changed="reloadDepots"></ReponsesList>
+
         </div>
         <div class="flex items-center justify-center" v-else>
           <p class="text-base font-semibold">Aucune réponse</p>
@@ -31,18 +28,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { getLabel } from '@/enum/demande_clinique/reponse/type';
+import { mapGetters, mapActions } from 'vuex';
+import ReponsesList from "@/components/ReponsesList.vue";
 
 export default {
   name: 'Index',
+  components: {ReponsesList},
   computed: {
     ...mapGetters({
       depots: 'demande_clinique/depots',
     }),
   },
   methods: {
-    getTypeLabel: getLabel,
+    ...mapActions({
+      reloadDepots: 'demande_clinique/chargerDepots'
+    })
   }
 };
 </script>

@@ -31,4 +31,16 @@ class DepotRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findNonValideesByReponseLaPlusRecente(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.reponses', 'r')
+            ->addSelect('r')
+            ->where('r.dateValidated IS NULL')
+            ->orderBy('r.dateCreation', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

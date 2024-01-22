@@ -9,7 +9,7 @@
       <form class="flex flex-col gap-2" @submit.prevent="creer">
         <input type="text" v-model="titre" placeholder="Titre" class="border border-gray-300 rounded-lg p-2">
         <textarea v-model="description" placeholder="Description" class="border border-gray-300 rounded-lg p-2"></textarea>
-        <select v-model="type" class="border border-gray-300 rounded-lg p-2" placeholder="Priorité">
+        <select v-model="type" class="border border-gray-300 rounded-lg p-2">
           <option selected disabled value="0">Type de réponse</option>
           <option v-for="type in getTypes()" :value="type" :key="type">{{ getTypeLabel(type) }}</option>
         </select>

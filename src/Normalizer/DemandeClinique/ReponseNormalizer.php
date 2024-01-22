@@ -9,9 +9,13 @@ class ReponseNormalizer implements NormalizerInterface
 {
     public function normalize($object, string $format = null, array $context = [])
     {
+        // Changes here are optional but future-proof
+        // Would require test changes too
         return [
             'id' => $object->getId(),
             'date_creation' => $object->getDateCreation()->format('Y-m-d H:i:s'),
+//            'date_validation' => $object->getDateValidated() ? $object->getDateValidated()->format('Y-m-d H:i:s') : null,
+//            'validation_comment' => $object->getValidationComment(),
             'titre' => $object->getTitre(),
             'description' => $object->getDescription(),
             'depot' => $object->getDepot()->getId(),
